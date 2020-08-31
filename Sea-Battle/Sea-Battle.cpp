@@ -36,72 +36,79 @@ int main()
     const int SIZE = 10;
     char arr3[11] = { ' ', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j' }; //массив для обозначения нумерации ячеек
     bool PobedaI = false, PobedaKomp = false;
-
     char Povtor_igry;
-    //заставка
+    int Tip_Igry;
+    //процесс игры
     do {
         char Battle_Pole_I[SIZE][SIZE] = { {' ', ' ', ' '} };
+        char Battle_Pole_I_2[SIZE][SIZE] = { {' ', ' ', ' '} };
         char Battle_Pole_Komp[SIZE][SIZE] = { {' ', ' ', ' '} };
         int Podbitye_Kor_I = 0; //количество подбитых кораблей на момент начала игры у игрока
         int Podbitye_Kor_Komp = 0; //количество подбитых кораблей на момент начала игры у игрока
-        cout << "           Добро пожаловать в игру Морской бой" << endl;
-        cout << "      Для начала необходимо заполнить игровое поле" << endl;
-        cout << "Выберите количество обнопалубных кораблей, но не более 5" << endl;
-        // выбираем количество кораблей
-        int Ship_Num, count = 0;
-        bool Povtor_Udara = false;
-        //цикл выбора количества кораблей
+        cout << "       Добро пожаловать в игру Морской бой" << endl;
+        cout << "                Выберите тип игры            " << endl;
+        cout << "      1-Игра с компьютером  2-Игра с напарником            " << endl;
+        // цикл выбора количества игроков 
         do {
-            cin >> Ship_Num;
-            if (Ship_Num > 5)
+            cin >> Tip_Igry;
+            if (Tip_Igry < 1 || Tip_Igry > 2)
                 cout << "Некорректное значение, повторите ввод" << endl;
-
-        } while (Ship_Num > 5);
+        } while (Tip_Igry != 1 && Tip_Igry != 2);
         system("cls");
-        //заполнение игрового поля-шаблон игрового поля
-        cout << "Теперь заполните игровое поле, выбрав необходимые координаты" << endl;
-        for (int i = 0; i < (SIZE + 1); i++) { //цикл для обозначения горизонтальной строки координат
-            cout << "|" << arr3[i] << "|";
-        }
-        cout << endl;
-        for (int i = 0; i < SIZE; i++) {
-            cout << "|" << i << "|";          //цикл для обозначения вертикальной строки координат
-            for (int j = 0; j < SIZE; j++) {
-                cout << "| |";
-            }
-            cout << endl;
-        }
-        //расстановка кораблей игроком
-        while (count < Ship_Num) {
-            Rasstanovka_kor(Battle_Pole_I);
+        switch (Tip_Igry) {
+            // игра с компьютером
+        case 1:
+            cout << "      Для начала необходимо заполнить игровое поле" << endl;
+            cout << "Выберите количество обнопалубных кораблей, но не более 5" << endl;
+            // выбираем количество кораблей
+            int Ship_Num, count = 0;
+            bool Povtor_Udara = false;
+            //цикл выбора количества кораблей
+            do {
+                cin >> Ship_Num;
+                if (Ship_Num > 5)
+                    cout << "Некорректное значение, повторите ввод" << endl;
+            } while (Ship_Num > 5);
             system("cls");
-            cout << "Поле игрока" << endl;
-            for (int i = 0; i < 11; i++) {
+            //заполнение игрового поля-шаблон игрового поля
+            cout << "Теперь заполните игровое поле, выбрав необходимые координаты" << endl;
+            for (int i = 0; i < (SIZE + 1); i++) { //цикл для обозначения горизонтальной строки координат
                 cout << "|" << arr3[i] << "|";
             }
             cout << endl;
-            Pokaz_Ship(Battle_Pole_I);
-            count++;
-        }
-        count = 0;
-        //расстановка кораблей компьютером
-        cout << "Теперь поле заполняет компьютер" << endl;
-        while (count < Ship_Num) {
-            Rasstanovka_kor_Komp(Battle_Pole_Komp);
-            count++;
-        }
-        //Pokaz_Ship(Battle_Pole_Komp); //показ поля компьютера (если необходимо, в идеале мы не видим корабли компьютера)
-        count = 1;
-        // процесс боя
-        do {
-            //ход игрока
-            cout << "Игрок наносит " << count << " удар" << endl;
-            bool A = false;
+            for (int i = 0; i < SIZE; i++) {
+                cout << "|" << i << "|";          //цикл для обозначения вертикальной строки координат
+                for (int j = 0; j < SIZE; j++) {
+                    cout << "| |";
+                }
+                cout << endl;
+            }
+            //расстановка кораблей игроком
+            while (count < Ship_Num) {
+                Rasstanovka_kor(Battle_Pole_I);
+                system("cls");
+                cout << "Поле игрока" << endl;
+                for (int i = 0; i < 11; i++) {
+                    cout << "|" << arr3[i] << "|";
+                }
+                cout << endl;
+                Pokaz_Ship(Battle_Pole_I);
+                count++;
+            }
+            count = 0;
+            //расстановка кораблей компьютером
+            cout << "Теперь поле заполняет компьютер" << endl;
+            while (count < Ship_Num) {
+                Rasstanovka_kor_Komp(Battle_Pole_Komp);
+                count++;
+            }
+            //Pokaz_Ship(Battle_Pole_Komp); //показ поля компьютера (если необходимо, в идеале мы не видим корабли компьютера)
+            count = 1;
+            // процесс боя
             do {
-
-                A = HodIgr(Battle_Pole_Komp);
-                //
-                //       Povtor_Udara = false;
+                //ход игрока
+                cout << "Игрок наносит " << count << " удар" << endl;
+                HodIgr(Battle_Pole_Komp);
                 system("cls");
                 cout << "           Поле игрока                         Компьютера" << endl;
                 for (int i = 0; i < (SIZE + 1); i++) {
@@ -121,68 +128,58 @@ int main()
                     PobedaI = true;
                     break;
                 }
-                /*  if (Result_Hoda > Podbitye_Kor_Komp) {
-                      Podbitye_Kor_Komp++;
-                      Povtor_Udara = true;*/
+                //ход компьютера
+                cout << "Компьютер наносит " << count << " удар" << endl;
+                cout << "Нажмите 0, что бы компьютер ударил" << endl;
+                int Udar;
+                do {
+                    //  Povtor_Udara = false;
+                    cin >> Udar;
+                    if (Udar != 0)
+                        cout << "Некорректное значение, попробуйте еще раз" << endl;
+                    else
+                        break;
+                } while (Udar != 0);
+                HodKomp(Battle_Pole_I);
+                system("cls");
+                cout << "           Поле игрока                         Компьютера" << endl;
+                for (int i = 0; i < (SIZE + 1); i++) {
+                    cout << "|" << arr3[i] << "|";            //цикл для обозначения горизонтальной строки координат
+                }
+                cout << "     ";
+                for (int i = 0; i < (SIZE + 1); i++) {
+                    cout << "|" << arr3[i] << "|";           //цикл для обозначения горизонтальной строки координат
+                }
+                cout << endl;
+                Pokaz_Udar_I(Battle_Pole_Komp, Battle_Pole_I);
+                count++;
+                // подсчет количества подбитых кораблей игрока
+                Result(Battle_Pole_I);
+                if (Result_Hoda == Ship_Num) {
+                    PobedaKomp = true;
+                    break;
+                }
+            } while (!PobedaI || !PobedaKomp);
+            //результат игры
+            if (PobedaI) {
+                cout << "Выиграл Игрок! УРА!!!" << endl;
             }
-        } while (A);
-        //ход компьютера
-
-        cout << "Компьютер наносит " << count << " удар" << endl;
-        cout << "Нажмите 0, что бы компьютер ударил" << endl;
-        int Udar;
-        do {
-            //  Povtor_Udara = false;
-            cin >> Udar;
-            if (Udar != 0)
-                cout << "Некорректное значение, попробуйте еще раз" << endl;
-            else
-                break;
-        } while (Udar != 0);
-        HodKomp(Battle_Pole_I);
-        //do {
-        system("cls");
-        cout << "           Поле игрока                         Компьютера" << endl;
-        for (int i = 0; i < (SIZE + 1); i++) {
-            cout << "|" << arr3[i] << "|";            //цикл для обозначения горизонтальной строки координат
-        }
-        cout << "     ";
-        for (int i = 0; i < (SIZE + 1); i++) {
-            cout << "|" << arr3[i] << "|";           //цикл для обозначения горизонтальной строки координат
-        }
-        cout << endl;
-        Pokaz_Udar_I(Battle_Pole_Komp, Battle_Pole_I);
-        count++;
-        // подсчет количества подбитых кораблей игрока
-        Result(Battle_Pole_I);
-        //int Result_Hoda = Result(Battle_Pole_I);
-        if (Result_Hoda == Ship_Num) {
-            PobedaKomp = true;
+            else if (PobedaKomp) {
+                cout << "Выиграл Компьютер! УРА!!!" << endl;
+            }
+            cout << "Хотите повторить" << endl;
+            cout << "       Y/N      " << endl;
+            cin >> Povtor_igry;
+            system("cls");
             break;
+            //игра со вторым игроком
+        //case 2:
+         //   break;
         }
-        /*if (Result_Hoda > Podbitye_Kor_I) {
-            Podbitye_Kor_I++;
-            Povtor_Udara = true;
-        }
-
-        } while (Povtor_Udara == true);*/
-    } while (!PobedaI || !PobedaKomp);
-    //результат игры
-    if (PobedaI) {
-        cout << "Выиграл Игрок! УРА!!!" << endl;
-    }
-    else if (PobedaKomp) {
-        cout << "Выиграл Компьютер! УРА!!!" << endl;
-    }
-    cout << "Хотите повторить" << endl;
-    cout << "       Y/N      " << endl;
-    cin >> Povtor_igry;
-    system("cls");
-
-} while (Povtor_igry == 'Y');
-system("pause");
+    } while (Povtor_igry == 'Y');
+    system("pause");
 }
-
+// описание функций
 int Zamena_B_na_Num(char Koord) {
     int y;
     if (Koord == 'a') {
@@ -273,11 +270,9 @@ void HodIgr(char arr[SIZE][SIZE]) {
     } while (arr[x][y] == '*' || arr[x][y] == 'O');
     if (arr[x][y] == 'K') {
         arr[x][y] = 'O';
-        retutn true;
     }
     else {
         arr[x][y] = '*';
-        retutn true;
     }
 }
 
