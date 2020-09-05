@@ -12,11 +12,13 @@ const int SIZE = 10;
 
 //функция замены буквенного значения координаты столбца на цифру
 int Zamena_B_na_Num(char Koord);
-//функция расстановки кораблей первого игрока
+//функция расстановки однопалубных кораблей первого игрока
 void Rasstanovka_kor(char arr[SIZE][SIZE]);
-//функция расстановки кораблей второго
+//функция расстановки двухпалубных кораблей первого игрока
+void Rasstanovka_kor_2_pal(char arr[SIZE][SIZE]);
+//функция расстановки кораблей второго игрока
 void Rasstanovka_kor_2(char arr[SIZE][SIZE]);
-// функция горизонтальной граници координат
+// функция горизонтальной границы координат
 void Gor_Granica(char* arr, int size);
 //функция показа кораблей
 void Pokaz_Ship(char arr[SIZE][SIZE]);
@@ -85,20 +87,12 @@ int main()
             // игра с компьютером
         case 1:
         {
-            cout << "      Для начала необходимо заполнить игровое поле" << endl;
-            cout << "Выберите количество обнопалубных кораблей, но не более 5" << endl;
-            // выбираем количество кораблей
-            int Ship_Num, count = 0;
+           //количество кораблей 4 (3 однопалубных, 1 двухпалубный)
+            int Ship_Num=5, count = 0;
             bool Povtor_Udara = false;
-            //цикл выбора количества кораблей
-            do {
-                cin >> Ship_Num;
-                if (Ship_Num > 5)
-                    cout << "Некорректное значение, повторите ввод" << endl;
-            } while (Ship_Num > 5);
             system("cls");
             //заполнение игрового поля-шаблон игрового поля
-            cout << "Теперь заполните игровое поле, выбрав необходимые координаты" << endl;
+            cout << "Заполните игровое поле, выбрав необходимые координаты" << endl;
             Gor_Granica(arr3, SIZE);//цикл для обозначения горизонтальной строки координат
             cout << endl;
             for (int i = 0; i < SIZE; i++) {
@@ -109,10 +103,26 @@ int main()
                 cout << endl;
             }
             //расстановка кораблей игроком
-            while (count < Ship_Num) {
+            //расстановка однопалубных кораблей
+            while (count < 3) {
                 Rasstanovka_kor(Battle_Pole_I);
                 system("cls");
                 cout << "Поле игрока" << endl;
+                //горизонтальная граница поля
+                for (int i = 0; i < 11; i++) {
+                    cout << "|" << arr3[i] << "|";
+                }
+                cout << endl;
+                Pokaz_Ship(Battle_Pole_I);
+                count++;
+            }
+            count = 0;
+            //расстановка двухпалубных кораблей
+            while (count < 2) {
+                Rasstanovka_kor_2_pal(Battle_Pole_I);
+                system("cls");
+                cout << "Поле игрока" << endl;
+                //горизонтальная граница поля
                 for (int i = 0; i < 11; i++) {
                     cout << "|" << arr3[i] << "|";
                 }
@@ -430,19 +440,48 @@ int Zamena_B_na_Num(char Koord) {
 void Rasstanovka_kor(char arr[SIZE][SIZE]) {
     int x, y;
     char St;
+    //расстановка однопалубных кораблей
+        do {
+            do {
+                do {
+                    cout << "Укажите первую координату однопалубного корабля (столбец) "; cin >> St;
+                } while (St != 'a' && St != 'b' && St != 'c' && St != 'd' && St != 'e' && St != 'f' && St != 'g' && St != 'h' && St != 'i' && St != 'j');
+                y = Zamena_B_na_Num(St);
+            } while (y < 0 || y > 9);
+            do {
+                cout << "Укажите вторую координату однопалубного корабля (строка) "; cin >> x;
+            } while (x < 0 || x > 9);
+            //цикл повторяется пока вы не попадем на свободную клетку, у которой нет вокруг однопалубных кораблей
+        } while (arr[x][y] == 'K'||        
+            //координаты соседних клеток крест накрест
+            arr[x - 1][y] == 'K' || arr[x + 1][y] == 'K' || arr[x][y - 1] == 'K' || arr[x][y + 1] == 'K'
+            //по диагонали
+            || arr[x - 1][y + 1] == 'K' || arr[x + 1][y + 1] == 'K' || arr[x - 1][y - 1] == 'K' || arr[x + 1][y - 1] == 'K');
+
+        arr[x][y] = 'K';
+}
+
+void Rasstanovka_kor_2_pal(char arr[SIZE][SIZE]) {
+    int x, y;
+    char St;
+    //расстановка двухпалубных кораблей
     do {
         do {
             do {
-                cout << "Укажите первую координату (столбец) "; cin >> St;
+                cout << "Укажите первую координату двухпалубного корабля (столбец) "; cin >> St;
             } while (St != 'a' && St != 'b' && St != 'c' && St != 'd' && St != 'e' && St != 'f' && St != 'g' && St != 'h' && St != 'i' && St != 'j');
             y = Zamena_B_na_Num(St);
         } while (y < 0 || y > 9);
         do {
-            cout << "Укажите вторую координату (строка) "; cin >> x;
+            cout << "Укажите вторую координату двухпалубного корабля (строка) "; cin >> x;
         } while (x < 0 || x > 9);
-
-    } while (arr[x][y] == 'K');
-    arr[x][y] = 'K';
+        //цикл повторяется пока вы не попадем на свободную клетку, у которой нет вокруг однопалубных кораблей и
+    } while (arr[x][y] == 'D' || arr[x][y] == 'K'|| 
+        //координаты соседних клеток крест накрест
+        arr[x-1][y] == 'K' || arr[x+1][y] == 'K' || arr[x][y-1] == 'K' || arr[x][y+1] == 'K'
+        //по диагонали
+        || arr[x-1][y+1] == 'K' ||arr[x+1][y+1] == 'K' || arr[x-1][y-1] == 'K' || arr[x+1][y-1] == 'K');
+    arr[x][y] = 'D';
 }
 
 void Rasstanovka_kor_2(char arr[SIZE][SIZE]) {
@@ -450,7 +489,9 @@ void Rasstanovka_kor_2(char arr[SIZE][SIZE]) {
     char St;
     do {
         do {
-            cout << "Укажите первую координату (столбец) "; cin >> St;
+            do {
+                cout << "Укажите первую координату (столбец) "; cin >> St;
+            } while (St != 'a' && St != 'b' && St != 'c' && St != 'd' && St != 'e' && St != 'f' && St != 'g' && St != 'h' && St != 'i' && St != 'j');
             y = Zamena_B_na_Num(St);
         } while (y < 0 || y > 9);
         do {
