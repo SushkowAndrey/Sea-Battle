@@ -88,7 +88,7 @@ int main()
         case 1:
         {
            //количество кораблей 4 (3 однопалубных, 1 двухпалубный)
-            int Ship_Num=5, count = 0;
+            int Ship_Num=1, count = 0;
             bool Povtor_Udara = false;
             system("cls");
             //заполнение игрового поля-шаблон игрового поля
@@ -104,7 +104,7 @@ int main()
             }
             //расстановка кораблей игроком
             //расстановка однопалубных кораблей
-            while (count < 3) {
+            while (count < 1) {
                 Rasstanovka_kor(Battle_Pole_I);
                 system("cls");
                 cout << "Поле игрока" << endl;
@@ -117,7 +117,7 @@ int main()
                 count++;
             }
             count = 0;
-            //расстановка двухпалубных кораблей
+           /* //расстановка двухпалубных кораблей
             while (count < 2) {
                 Rasstanovka_kor_2_pal(Battle_Pole_I);
                 system("cls");
@@ -129,20 +129,19 @@ int main()
                 cout << endl;
                 Pokaz_Ship(Battle_Pole_I);
                 count++;
-            }
+            }*/
             count = 0;
             //расстановка кораблей компьютером
             while (count < Ship_Num) {
                 Rasstanovka_kor_Komp(Battle_Pole_Komp);
                 count++;
             }
-            //Pokaz_Ship(Battle_Pole_Komp); //показ поля компьютера (если необходимо, в идеале мы не видим корабли компьютера)
             count = 1;
             // процесс боя
             do {
                 //ход игрока
                 cout << "Счет " << Result_Hoda_I << "/" << Ship_Num << " (Игрок) - (Компьютер) " << Result_Hoda_K << "/" << Ship_Num << endl;
-                cout << "Игрок наносит " << count << " удар" << endl;
+                cout << "Игрок наносит " << count << " удар" << endl; // переменная count показывает число ударов
                 do { //цикл для определения повторения хода
                     Povtor_hoda = HodIgr(Battle_Pole_Komp);
                     system("cls");
@@ -153,11 +152,10 @@ int main()
                     cout << endl;
                     Pokaz_Udar(Battle_Pole_Komp, Battle_Pole_I);
                     count++;
-                    // подсчет количества подбитых кораблей компьютера
+                    // подсчет количества подбитых кораблей компьютера для окончания хода
                     Result(Battle_Pole_Komp);
                     Result_Hoda_I = Result(Battle_Pole_Komp);
                     if (Result_Hoda_I == Ship_Num) {
-                        PobedaI = true;
                         break;
                     }
                     if (Povtor_hoda) { // уведомление о попадании и повторе хода
@@ -172,6 +170,11 @@ int main()
                         } while (Povt_I != 0);
                     }
                 } while (Povtor_hoda);
+                // подсчет количества подбитых кораблей компьютера для окончания боя
+                if (Result_Hoda_I == Ship_Num) {
+                    PobedaI = true;
+                    break;
+                }
                 //ход компьютера
                 do {
                     cout << "Счет " << Result_Hoda_I << "/" << Ship_Num << " (Игрок) - (Компьютер) " << Result_Hoda_K << "/" << Ship_Num << endl;
@@ -194,10 +197,9 @@ int main()
                     cout << endl;
                     Pokaz_Udar(Battle_Pole_Komp, Battle_Pole_I);
                     count++;
-                    // подсчет количества подбитых кораблей игрока
+                    // подсчет количества подбитых кораблей игрока для окончания хода
                     Result_Hoda_K = Result(Battle_Pole_I);
                     if (Result_Hoda_K == Ship_Num) {
-                        PobedaKomp = true;
                         break;
                     }
                     if (Povtor_hoda) {  // уведомление о попадании и повторе хода
@@ -212,7 +214,12 @@ int main()
                         } while (Povt_K != 0);
                     }
                 } while (Povtor_hoda);
-            } while (!PobedaI || !PobedaKomp);
+                // подсчет количества подбитых кораблей игрока для окончания боя
+                if (Result_Hoda_K == Ship_Num) {
+                    PobedaKomp = true;
+                    break;
+                }
+            } while (!PobedaI && !PobedaKomp);
             //результат игры
             if (PobedaI) {
                 cout << "Выиграл Игрок! УРА!!!" << endl;
@@ -222,7 +229,7 @@ int main()
             }
         }
         break;
-        //игра со вторым игроком
+        //ИГРА СО ВТОРЫМ ИГРОКОМ
         case 2:
         {
             bool Povtor_Udara = false;
@@ -237,9 +244,9 @@ int main()
             cout << "Выберите количество однопалубных кораблей, но не более 5" << endl;
             do {
                 cin >> Ship_Num;
-                if (Ship_Num > 5)
+                if (Ship_Num > 5 || Ship_Num < 1)
                     cout << "Некорректное значение, повторите ввод" << endl;
-            } while (Ship_Num > 5);
+            } while (Ship_Num > 5 || Ship_Num < 1);
             system("cls");
             //заполнение игрового поля-шаблон игрового поля
             cout << "Теперь заполните игровое поле, выбрав необходимые координаты" << endl;
@@ -318,6 +325,7 @@ int main()
             count = 1;
             do {
                 //ход первого игрока
+                cout << "Счет " << Result_Hoda_I << "/" << Ship_Num << " (Игрок "<< Igroki.Igrok_1 << ")"<< "-(Игрок "<< Igroki.Igrok_2 << ") " << Result_Hoda_I2 << "/" << Ship_Num << endl;
                 cout << "Игрок " << Igroki.Igrok_1 << " наносит " << count << " удар" << endl;
                 do { //цикл для определения повторения хода
                     Povtor_hoda = HodIgr_1(Battle_Pole_I_2);
@@ -329,11 +337,10 @@ int main()
                     cout << endl;
                     Pokaz_Udar_2(Battle_Pole_I_1, Battle_Pole_I_2); // показ двух полей игроков только с результатами хода
                     count++;
-                    // подсчет количества подбитых кораблей компьютера
+                    // подсчет количества подбитых кораблей компьютера для завершения хода
                     Result(Battle_Pole_I_2);
                     Result_Hoda_I = Result(Battle_Pole_I_2);
                     if (Result_Hoda_I == Ship_Num) {
-                        Pobeda_I_1 = true;
                         break;
                     }
                     if (Povtor_hoda) { // уведомление о попадании и повторе хода
@@ -348,8 +355,13 @@ int main()
                         } while (Povt_I != 0);
                     }
                 } while (Povtor_hoda);
-
+                // подсчет количества подбитых кораблей второго игрока для завершения боя
+                if (Result_Hoda_I == Ship_Num) {
+                    Pobeda_I_1 = true;
+                    break;
+                }
                 //ход второго игрока
+                cout << "Счет " << Result_Hoda_I << "/" << Ship_Num << " (Игрок " << Igroki.Igrok_1 << ")" << "-(Игрок " << Igroki.Igrok_2 << ") " << Result_Hoda_I2 << "/" << Ship_Num << endl;
                 cout << "Игрок " << Igroki.Igrok_2 << " наносит " << count << " удар" << endl;
                 do { //цикл для определения повторения хода
                     Povtor_hoda = HodIgr_2(Battle_Pole_I_1);
@@ -361,11 +373,10 @@ int main()
                     cout << endl;
                     Pokaz_Udar_2(Battle_Pole_I_1, Battle_Pole_I_2); // показ двух полей игроков только с результатами хода
                     count++;
-                    // подсчет количества подбитых кораблей компьютера
+                    // подсчет количества подбитых кораблей компьютера для завершения хода
                     Result(Battle_Pole_I_1);
                     Result_Hoda_I2 = Result(Battle_Pole_I_1);
                     if (Result_Hoda_I2 == Ship_Num) {
-                        Pobeda_I_2 = true;
                         break;
                     }
                     if (Povtor_hoda) { // уведомление о попадании и повторе хода
@@ -380,15 +391,18 @@ int main()
                         } while (Povt_I != 0);
                     }
                 } while (Povtor_hoda);
-            } while (!Pobeda_I_1 || !Pobeda_I_2);
-            //ПРИ ПОБЕДЕ НЕ ВЫХОДИМ ИЗ ЦИКЛА!!!
-
+                // подсчет количества подбитых кораблей компьютера для завершения боя
+                if (Result_Hoda_I2 == Ship_Num) {
+                    Pobeda_I_2 = true;
+                    break;
+                }
+            } while (!Pobeda_I_1 && !Pobeda_I_2);
             //результат игры
             if (Pobeda_I_1) {
                 cout << "Выиграл Игрок " << Igroki.Igrok_1 << endl;
             }
             else if (Pobeda_I_2) {
-                cout << "Выиграл Игрок " << Igroki.Igrok_1 << endl;
+                cout << "Выиграл Игрок " << Igroki.Igrok_2 << endl;
             }
         }
         break;
@@ -497,8 +511,12 @@ void Rasstanovka_kor_2(char arr[SIZE][SIZE]) {
         do {
             cout << "Укажите вторую координату (строка) "; cin >> x;
         } while (x < 0 || x > 9);
-
-    } while (arr[x][y] == 'H'); //корабль указывается в виде символа Н для различия от игрока №1
+    } while (arr[x][y] == 'K' ||
+        //координаты соседних клеток крест накрест
+        arr[x - 1][y] == 'H' || arr[x + 1][y] == 'H' || arr[x][y - 1] == 'H' || arr[x][y + 1] == 'H'
+        //по диагонали
+        || arr[x - 1][y + 1] == 'H' || arr[x + 1][y + 1] == 'H' || arr[x - 1][y - 1] == 'H' || arr[x + 1][y - 1] == 'H');
+        //корабль указывается в виде символа Н для различия от игрока №1
     arr[x][y] = 'H';
 }
 
@@ -522,10 +540,10 @@ void Rasstanovka_kor_Komp(char arr[SIZE][SIZE]) {
     int x, y;
     do {
         do {
-            x = rand() % 5;
+            x = rand() % 9;
         } while (x < 0 || x > 9);
         do {
-            y = rand() % 5;
+            y = rand() % 9;
         } while (y < 0 || y > 9);
 
     } while (arr[x][y] == 'K');
