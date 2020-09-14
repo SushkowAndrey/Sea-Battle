@@ -5,24 +5,12 @@
 #include <iostream>
 #include <ctime>
 #include <string>
-#include"Function.h"
+#include "Function.h"
 #include "Export_result.h"
+#include "Players.h"
 
 using namespace std;
 
-
-// структура двух игроков
-struct Igroki_2_na_2 {
-    string Igrok_1;
-    string Igrok_2;
-    void Input() {
-        cout << "Ввод данных об игроках" << endl;
-        cout << "Введите имя первого игрока (англ) "; cin >> Igrok_1;
-        system("cls");
-        cout << "Ввод данных об игроках" << endl;
-        cout << "Введите имя второго игрока (англ) "; cin >> Igrok_2;
-    }
-};
 
 int main()
 {
@@ -379,7 +367,8 @@ int main()
             //результат игры
             if (Pobeda_I_1) {
                 cout << "Выиграл Игрок " << Igroki.Igrok_1 << " со счетом "<< Result_Hoda_I << " - " << Result_Hoda_I2 << endl;
-                string Res1 = Igroki.Igrok_1;
+                string Res1 = "Выиграл Игрок " + Igroki.Igrok_1 + " со счетом "; + Result_Hoda_I + " - " + Result_Hoda_I2;
+                //выгрузка результата игры в файл
                 cout << "Выгрузить результат в файл?" << endl;
                 cout << "       Y/N      " << endl;
                 char Vygruzka;

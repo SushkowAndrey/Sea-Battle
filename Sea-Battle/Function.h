@@ -55,7 +55,8 @@ void Rasstanovka_kor(char arr[SIZE][SIZE]) {
         do {
             do {
                 cout << "”кажите первую координату однопалубного корабл€ (столбец) "; cin >> St;
-            } while (St != 'a' && St != 'b' && St != 'c' && St != 'd' && St != 'e' && St != 'f' && St != 'g' && St != 'h' && St != 'i' && St != 'j');
+            } while (St != 'a' && St != 'b' && St != 'c' && St != 'd' && St != 'e' 
+                && St != 'f' && St != 'g' && St != 'h' && St != 'i' && St != 'j');
             y = Zamena_B_na_Num(St);
         } while (y < 0 || y > 9);
         do {
@@ -142,7 +143,8 @@ void Rasstanovka_kor_2(char arr[SIZE][SIZE]) {
         do {
             do {
                 cout << "”кажите первую координату (столбец) "; cin >> St;
-            } while (St != 'a' && St != 'b' && St != 'c' && St != 'd' && St != 'e' && St != 'f' && St != 'g' && St != 'h' && St != 'i' && St != 'j');
+            } while (St != 'a' && St != 'b' && St != 'c' && St != 'd' && St != 'e' && St != 'f' 
+                && St != 'g' && St != 'h' && St != 'i' && St != 'j');
             y = Zamena_B_na_Num(St);
         } while (y < 0 || y > 9);
         do {
@@ -198,7 +200,8 @@ bool HodIgr(char arr[SIZE][SIZE]) {
         do {
             do {
                 cout << "”кажите первую координату (столбец) "; cin >> St;
-            } while (St != 'a' && St != 'b' && St != 'c' && St != 'd' && St != 'e' && St != 'f' && St != 'g' && St != 'h' && St != 'i' && St != 'j');
+            } while (St != 'a' && St != 'b' && St != 'c' && St != 'd' && St != 'e' 
+                && St != 'f' && St != 'g' && St != 'h' && St != 'i' && St != 'j');
             y = Zamena_B_na_Num(St);
         } while (y < 0 || y > 9);
         do {
@@ -223,7 +226,8 @@ bool HodIgr_1(char arr[SIZE][SIZE]) {
         do {
             do {
                 cout << "”кажите первую координату (столбец) "; cin >> St;
-            } while (St != 'a' && St != 'b' && St != 'c' && St != 'd' && St != 'e' && St != 'f' && St != 'g' && St != 'h' && St != 'i' && St != 'j');
+            } while (St != 'a' && St != 'b' && St != 'c' && St != 'd' && St != 'e' && St != 'f' 
+                && St != 'g' && St != 'h' && St != 'i' && St != 'j');
             y = Zamena_B_na_Num(St);
         } while (y < 0 || y > 9);
         do {

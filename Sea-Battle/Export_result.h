@@ -7,7 +7,7 @@ void Export_Result(string Res) {
 
 	ofstream File;
 
-	File.open("Result.txt");
+	File.open("Result.txt", ios::app);
 
     if (!File.is_open())
     {
