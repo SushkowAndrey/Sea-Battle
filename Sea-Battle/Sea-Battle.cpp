@@ -7,7 +7,9 @@
 #include <string>
 #include "Function.h"
 #include "Export_result.h"
+#include "Import_result.h"
 #include "Players.h"
+#include "Result.h"
 
 using namespace std;
 
@@ -36,12 +38,13 @@ int main()
         cout << "       Добро пожаловать в игру Морской бой" << endl;
         cout << "                Выберите тип игры            " << endl;
         cout << "      1-Игра с компьютером  2-Игра с напарником            " << endl;
+        cout << "            3-Посмотреть прошлый результат            " << endl;
         // цикл выбора количества игроков 
         do {
             cin >> Tip_Igry;
-            if (Tip_Igry < 1 || Tip_Igry > 2)
+            if (Tip_Igry < 1 || Tip_Igry > 3)
                 cout << "Некорректное значение, повторите ввод" << endl;
-        } while (Tip_Igry != 1 && Tip_Igry != 2);
+        } while (Tip_Igry != 1 && Tip_Igry != 2 && Tip_Igry != 3);
         system("cls");
         switch (Tip_Igry) {
             // игра с компьютером
@@ -367,7 +370,8 @@ int main()
             //результат игры
             if (Pobeda_I_1) {
                 cout << "Выиграл Игрок " << Igroki.Igrok_1 << " со счетом "<< Result_Hoda_I << " - " << Result_Hoda_I2 << endl;
-                string Res1 = "Выиграл Игрок " + Igroki.Igrok_1 + " со счетом "; + Result_Hoda_I + " - " + Result_Hoda_I2;
+                //////////////////////////////////////////////////////////
+                //Result_play(Igroki.Igrok_1, Result_Hoda_I, Result_Hoda_I2);
                 //выгрузка результата игры в файл
                 cout << "Выгрузить результат в файл?" << endl;
                 cout << "       Y/N      " << endl;
@@ -381,7 +385,7 @@ int main()
                         break;
                 } while (Vygruzka != 'Y' && Vygruzka != 'N');
                 if (Vygruzka == 'Y') {
-                    Export_Result(Res1);
+                    //Export_Result(Result_play(Igroki.Igrok_1, Result_Hoda_I, Result_Hoda_I2));
                     break;
                 }
                 else if (Vygruzka == 'N')
@@ -410,6 +414,12 @@ int main()
             }
         }
         break;
+        case 3:
+        {
+            cout << "Результаты прошлых игр" << endl;
+            ImportResult("Result.txt");
+        }
+        break;
         }
         cout << "Хотите повторить" << endl;
         cout << "       Y/N      " << endl;
@@ -417,9 +427,9 @@ int main()
         do {
             if (Povtor_igry != 'Y')
                 cout << "Некорректное значение, попробуйте еще раз" << endl;
-            else
+            else if (Povtor_igry != 'N')
                 break;
-        } while (Povtor_igry != 'Y');
+        } while (Povtor_igry != 'Y'&& Povtor_igry != 'N');
         system("cls");
     } while (Povtor_igry == 'Y');
     system("pause");
