@@ -393,7 +393,7 @@ int main()
             }
             else if (Pobeda_I_2) {
                 cout << "Выиграл Игрок " << Igroki.Igrok_2 << " со счетом " << Result_Hoda_I << " - " << Result_Hoda_I2 << endl;
-                string Res2 = Igroki.Igrok_2;
+                string Res2 = "Выиграл Игрок " + Igroki.Igrok_2 + " со счетом " + to_string(Result_Hoda_I)+ " - " + to_string(Result_Hoda_I2);
                 cout << "Выгрузить результат в файл?" << endl;
                 cout << "       Y/N      " << endl;
                 char Vygruzka;
