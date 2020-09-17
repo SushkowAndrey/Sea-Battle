@@ -143,10 +143,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Export_result.h" />
-    <ClInclude Include="Function.h" />
+    <ClInclude Include="Function_Igr1_and_Igr2.h" />
+    <ClInclude Include="Fun_Igr_and_Komp.h" />
     <ClInclude Include="Import_result.h" />
+    <ClInclude Include="Other_Fun.h" />
     <ClInclude Include="Players.h" />
-    <ClInclude Include="Result.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

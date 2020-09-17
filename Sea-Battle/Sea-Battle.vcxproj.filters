@@ -20,9 +20,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Function.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
     <ClInclude Include="Export_result.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
@@ -32,7 +29,13 @@
     <ClInclude Include="Import_result.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="Result.h">
+    <ClInclude Include="Fun_Igr_and_Komp.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Function_Igr1_and_Igr2.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Other_Fun.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>
