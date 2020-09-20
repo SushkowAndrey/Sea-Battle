@@ -73,3 +73,20 @@ int Result(char arr[SIZE][SIZE]) {
     }
     return count;
 }
+
+//функция для проверки на дурака
+int Proverka_vvoda(string Sym) {
+    int Num = 0; //переменная для проверки на правильность ввода данных, опреденяет номер символа по таблице ASCII
+    while (Sym.size() != 1 || (Num != 49 && Num != 50 && Num != 51))
+    {
+        cin >> Sym;
+        for (int i = 0; i < Sym.size(); i++)
+        {
+            Num = Sym[i];
+        }
+        system("cls");
+        cout << "Некорректное значение, повторите ввод " << endl;
+    }
+    int Result = Sym[0] - '0'; //переменная, в которую преобразуется строка для определения типа игры
+    return Result;
+}

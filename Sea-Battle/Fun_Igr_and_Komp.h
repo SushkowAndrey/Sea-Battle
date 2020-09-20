@@ -130,7 +130,6 @@ void Rasstanovka_kor_Komp(char arr[SIZE][SIZE]) {
 //первая палуба
 void Rasstanovka_kor_2_pal_1_Komp(char arr[SIZE][SIZE]) {
     int x, y;
-    char St;
     bool Result_vybora;
     do {
         Result_vybora = true;
@@ -158,7 +157,6 @@ void Rasstanovka_kor_2_pal_1_Komp(char arr[SIZE][SIZE]) {
 //функция расстановки двухпалубных кораблей первого игрока - вторая палуба
 void Rasstanovka_kor_2_pal_2_Komp(char arr[SIZE][SIZE]) {
     int x, y;
-    char St;
     bool Result_vybora;
     do {
         Result_vybora = true;

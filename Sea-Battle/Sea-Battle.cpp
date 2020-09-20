@@ -5,6 +5,7 @@
 #include <iostream>
 #include <ctime>
 #include <string>
+#include <stdio.h>
 #include "Function_Igr1_and_Igr2.h"
 #include "Export_result.h"
 #include "Import_result.h"
@@ -22,7 +23,6 @@ int main()
     char arr3[11] = { ' ', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j' }; //массив для обозначения нумерации ячеек
     bool PobedaI = false, PobedaKomp = false, Pobeda_I_1 = false, Pobeda_I_2 = false;
     int Povtor_hoda_Igr_Komp;//переменная для определения повтора хода игрока/компьютера
-    //int Povtor_hoda_Komp_Igr;//переменная для определения повтора хода компьютера
     bool Povtor_hoda = false;//переменная для определения повтора хода
     char Povtor_igry;
     int Paluba1_2_I = 0; //переменная для расчета количества подбитых палуб первого двухпалубного корабля игрока
@@ -35,7 +35,7 @@ int main()
         char Battle_Pole_I_2[SIZE][SIZE] = { {' ', ' ', ' '} };
         char Battle_Pole_Komp[SIZE][SIZE] = { {' ', ' ', ' '} };
         int Podbitye_Kor_I = 0; //количество подбитых кораблей на момент начала игры у игрока
-        int Podbitye_Kor_Komp = 0; //количество подбитых кораблей на момент начала игры у игрока
+        int Podbitye_Kor_Komp = 0; //количество подбитых кораблей на момент начала игры у компьютера
         int Result_Hoda_I = 0; //переменная для подсчета результатов хода игрока (количества подбитых кораблей)
         int Result_Hoda_K = 0; //переменная для подсчета результатов хода компьютера (количества подбитых кораблей)
         int Result_Hoda_I2 = 0; //переменная для подсчета результатов хода игрока 2 (количества подбитых кораблей)
@@ -45,19 +45,17 @@ int main()
         cout << "            3-Посмотреть прошлый результат            " << endl;
         // цикл выбора количества игроков 
         // главное меню
-        int Tip_Igry;
-        do {
-            cin >> Tip_Igry;
-            if (Tip_Igry < 1 || Tip_Igry > 3)
-                cout << "Некорректное значение, повторите ввод" << endl;
-        } while (Tip_Igry != 1 && Tip_Igry != 2 && Tip_Igry != 3);
+        string Start_Game;
+        int Num=0; //переменная для проверки на правильность ввода данных, опреденяет номер символа по таблице ASCII
+        //проверка на дурака
+        int Tip_Igry = Proverka_vvoda(Start_Game);
         system("cls");
         switch (Tip_Igry) {
             // игра с компьютером
         case 1:
         {
            //количество кораблей 4 (4 однопалубных, 2 двухпалубных)
-            int Ship_Num=6, count = 0;//counc - счетчик для работы циклов
+            int Ship_Num=6, count = 0;//count - счетчик для работы циклов
             //переменная для определения повтора удара
             system("cls");
             //заполнение игрового поля-шаблон игрового поля
@@ -115,7 +113,7 @@ int main()
                     count++;
                 }
             //расстановка двухпалубных кораблей 
-            //расстановка первой палубы двухпалубного корабля
+            //расстановка первой и второй палубы двухпалубного корабля
             Rasstanovka_kor_2_pal_1_Komp(Battle_Pole_Komp);
             Rasstanovka_kor_2_pal_2_Komp(Battle_Pole_Komp);
             cout << endl;
