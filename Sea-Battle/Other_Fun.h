@@ -75,18 +75,36 @@ int Result(char arr[SIZE][SIZE]) {
 }
 
 //функци€ дл€ проверки на дурака
-int Proverka_vvoda(string Sym) {
+int Proverka_vvoda(string Sym, int Menu) {
     int Num = 0; //переменна€ дл€ проверки на правильность ввода данных, опреден€ет номер символа по таблице ASCII
-    while (Sym.size() != 1 || (Num != 49 && Num != 50 && Num != 51))
-    {
-        cin >> Sym;
-        for (int i = 0; i < Sym.size(); i++)
+    //проверка на дурака в главном меню
+    if (Menu == 0) {
+        while (Sym.size() != 1 || (Num != 49 && Num != 50 && Num != 51))
         {
-            Num = Sym[i];
+            cin >> Sym;
+            for (int i = 0; i < Sym.size(); i++)
+            {
+                Num = Sym[i];
+            }
+            system("cls");
+            cout << "Ќекорректное значение, повторите ввод " << endl;
         }
-        system("cls");
-        cout << "Ќекорректное значение, повторите ввод " << endl;
+        int Result = Sym[0] - '0'; //переменна€, в которую преобразуетс€ строка дл€ определени€ типа игры
+        return Result;
     }
-    int Result = Sym[0] - '0'; //переменна€, в которую преобразуетс€ строка дл€ определени€ типа игры
-    return Result;
+    //проверка на дурака в конце игры
+    else if (Menu == 1) {
+        while (Sym.size() != 1 || (Num != 78 && Num != 89))
+        {
+            cin >> Sym;
+            for (int i = 0; i < Sym.size(); i++)
+            {
+                Num = Sym[i];
+            }
+            system("cls");
+            cout << "Ќекорректное значение, повторите ввод " << endl;
+        }
+        char Result = Sym[0]; //переменна€, в которую преобразуетс€ строка дл€ определени€ типа игры
+        return Result;
+    }
 }

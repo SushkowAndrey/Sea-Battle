@@ -5,7 +5,6 @@
 #include <iostream>
 #include <ctime>
 #include <string>
-#include <stdio.h>
 #include "Function_Igr1_and_Igr2.h"
 #include "Export_result.h"
 #include "Import_result.h"
@@ -13,7 +12,6 @@
 #include "Fun_Igr_and_Komp.h"
 
 using namespace std;
-
 
 int main()
 {
@@ -24,10 +22,10 @@ int main()
     bool PobedaI = false, PobedaKomp = false, Pobeda_I_1 = false, Pobeda_I_2 = false;
     int Povtor_hoda_Igr_Komp;//переменная для определения повтора хода игрока/компьютера
     bool Povtor_hoda = false;//переменная для определения повтора хода
-    char Povtor_igry;
     int Paluba1_2_I = 0; //переменная для расчета количества подбитых палуб первого двухпалубного корабля игрока
     int Paluba1_2_K = 0; //переменная для расчета количества подбитых палуб первого двухпалубного корабля компьютера
-
+    char Povtor_igry; //переменная для определения повтора игры по ее окончанию
+    string Game_Step;    //переменная для определения последовательности при выборе
     //процесс игры
     do {
         char Battle_Pole_I[SIZE][SIZE] = { {' ', ' ', ' '} };
@@ -45,17 +43,17 @@ int main()
         cout << "            3-Посмотреть прошлый результат            " << endl;
         // цикл выбора количества игроков 
         // главное меню
-        string Start_Game;
         int Num=0; //переменная для проверки на правильность ввода данных, опреденяет номер символа по таблице ASCII
         //проверка на дурака
-        int Tip_Igry = Proverka_vvoda(Start_Game);
+        int Tip_Igry = Proverka_vvoda(Game_Step, 0);
         system("cls");
         switch (Tip_Igry) {
             // игра с компьютером
         case 1:
         {
            //количество кораблей 4 (4 однопалубных, 2 двухпалубных)
-            int Ship_Num=6, count = 0;//count - счетчик для работы циклов
+            int Ship_Num=8, //8 палуб всего
+            count = 0; //count - счетчик для работы циклов
             //переменная для определения повтора удара
             system("cls");
             //заполнение игрового поля-шаблон игрового поля
@@ -84,7 +82,7 @@ int main()
                 Pokaz_Ship(Battle_Pole_I);
                 count++;
             }
-           //расстановка двухпалубных кораблей 
+           //расстановка первого двухпалубного кораблей 
                 //расстановка первой палубы двухпалубного корабля
                 Rasstanovka_kor_2_pal_1(Battle_Pole_I);
                 system("cls");
@@ -105,6 +103,48 @@ int main()
                 }
                 cout << endl;
                 Pokaz_Ship(Battle_Pole_I);
+                //расстановка второго двухпалубного кораблей 
+                //расстановка первой палубы двухпалубного корабля
+                Rasstanovka_kor_2_2_pal_1(Battle_Pole_I);
+                system("cls");
+                cout << "Поле игрока" << endl;
+                //горизонтальная граница поля
+                for (int i = 0; i < 11; i++) {
+                    cout << "|" << arr3[i] << "|";
+                }
+                cout << endl;
+                Pokaz_Ship(Battle_Pole_I);
+                //расстановка второй палубы второго двухпалубного корабля
+                Rasstanovka_kor_2_2_pal_2(Battle_Pole_I);
+                system("cls");
+                cout << "Поле игрока" << endl;
+                //горизонтальная граница поля
+                for (int i = 0; i < 11; i++) {
+                    cout << "|" << arr3[i] << "|";
+                }
+                cout << endl;
+                Pokaz_Ship(Battle_Pole_I);
+                //расстановка третьего двухпалубного кораблей 
+                //расстановка первой палубы двухпалубного корабля
+                Rasstanovka_kor_2_3_pal_1(Battle_Pole_I);
+                system("cls");
+                cout << "Поле игрока" << endl;
+                //горизонтальная граница поля
+                for (int i = 0; i < 11; i++) {
+                    cout << "|" << arr3[i] << "|";
+                }
+                cout << endl;
+                Pokaz_Ship(Battle_Pole_I);
+                //расстановка второй палубы второго двухпалубного корабля
+                Rasstanovka_kor_2_3_pal_2(Battle_Pole_I);
+                system("cls");
+                cout << "Поле игрока" << endl;
+                //горизонтальная граница поля
+                for (int i = 0; i < 11; i++) {
+                    cout << "|" << arr3[i] << "|";
+                }
+                cout << endl;
+                Pokaz_Ship(Battle_Pole_I);
             //расстановка кораблей компьютером
                 //расстановка однопалубных кораблей
                 count = 0;
@@ -116,6 +156,10 @@ int main()
             //расстановка первой и второй палубы двухпалубного корабля
             Rasstanovka_kor_2_pal_1_Komp(Battle_Pole_Komp);
             Rasstanovka_kor_2_pal_2_Komp(Battle_Pole_Komp);
+            Rasstanovka_kor_2_2_pal_1_Komp(Battle_Pole_Komp);
+            Rasstanovka_kor_2_2_pal_2_Komp(Battle_Pole_Komp);
+            Rasstanovka_kor_2_3_pal_1_Komp(Battle_Pole_Komp);
+            Rasstanovka_kor_2_3_pal_2_Komp(Battle_Pole_Komp);
             cout << endl;
             Pokaz_Ship(Battle_Pole_Komp); //показ поля компьютера (если необходимо, в идеале мы не видим корабли компьютера)
             count = 1;
@@ -246,14 +290,45 @@ int main()
             } while (!PobedaI && !PobedaKomp);
             //результат игры
             if (PobedaI) {
-                cout << "Выиграл Игрок! УРА!!!" << endl;
+                cout << "Выиграл Игрок со счетом " << Result_Hoda_I << " - " << Result_Hoda_K << endl;
+                //переменная (строка) для записи результатов игры
+                string Res1 = "Выиграл Игрок со счетом " + to_string(Result_Hoda_I) + " - " + to_string(Result_Hoda_K);
+                //выгрузка результата игры в файл
+                cout << "Выгрузить результат в файл?" << endl;
+                cout << "       Y/N      " << endl;
+                char Vygruzka;
+                do {
+                    Vygruzka = Proverka_vvoda(Game_Step, 1);
+                } while (Vygruzka != 'Y' && Vygruzka != 'N');
+                if (Vygruzka == 'Y') {
+                    Export_Result(Res1);
+                    break;
+                }
+                else if (Vygruzka == 'N')
+                    break;
             }
             else if (PobedaKomp) {
-                cout << "Выиграл Компьютер! УРА!!!" << endl;
+                cout << "Выиграл Компьютер со счетом " << Result_Hoda_K << " - " << Result_Hoda_I << endl;
+                //переменная (строка) для записи результатов игры
+                string Res2 = "Выиграл Игрок со счетом " + to_string(Result_Hoda_K) + " - " + to_string(Result_Hoda_I);
+                //выгрузка результата игры в файл
+                cout << "Выгрузить результат в файл?" << endl;
+                cout << "       Y/N      " << endl;
+                char Vygruzka;
+                do {
+                    Vygruzka = Proverka_vvoda(Game_Step, 1);
+                } while (Vygruzka != 'Y' && Vygruzka != 'N');
+                if (Vygruzka == 'Y') {
+                    Export_Result(Res2);
+                    break;
+                }
+                else if (Vygruzka == 'N')
+                    break;
             }
         }
         break;
-        //ИГРА СО ВТОРЫМ ИГРОКОМ
+
+        //////////////////////////////////////////////ИГРА СО ВТОРЫМ ИГРОКОМ///////////////////////////////////////////////////////
         case 2:
         {
             bool Povtor_Udara = false;
@@ -424,22 +499,16 @@ int main()
             //результат игры
             if (Pobeda_I_1) {
                 cout << "Выиграл Игрок " << Igroki.Igrok_1 << " со счетом "<< Result_Hoda_I << " - " << Result_Hoda_I2 << endl;
-                //////////////////////////////////////////////////////////
-                //Result_play(Igroki.Igrok_1, Result_Hoda_I, Result_Hoda_I2);
+                string Res1 = "Выиграл Игрок " + Igroki.Igrok_1 + " со счетом " + to_string(Result_Hoda_I) + " - " + to_string(Result_Hoda_I2);
                 //выгрузка результата игры в файл
                 cout << "Выгрузить результат в файл?" << endl;
                 cout << "       Y/N      " << endl;
                 char Vygruzka;
                 do {
-                    cin >> Vygruzka;
-                    system("cls");
-                    if (Vygruzka != 'Y'&& Vygruzka != 'N')
-                        cout << "Некорректное значение, попробуйте еще раз" << endl;
-                    else
-                        break;
+                    Vygruzka = Proverka_vvoda(Game_Step, 1);
                 } while (Vygruzka != 'Y' && Vygruzka != 'N');
                 if (Vygruzka == 'Y') {
-                    //Export_Result(Result_play(Igroki.Igrok_1, Result_Hoda_I, Result_Hoda_I2));
+                    Export_Result(Res1);
                     break;
                 }
                 else if (Vygruzka == 'N')
@@ -447,17 +516,13 @@ int main()
             }
             else if (Pobeda_I_2) {
                 cout << "Выиграл Игрок " << Igroki.Igrok_2 << " со счетом " << Result_Hoda_I << " - " << Result_Hoda_I2 << endl;
-                string Res2 = "Выиграл Игрок " + Igroki.Igrok_2 + " со счетом " + to_string(Result_Hoda_I)+ " - " + to_string(Result_Hoda_I2);
+                //выгрузка результата игры в файл
+                string Res2 = "Выиграл Игрок " + Igroki.Igrok_2 + " со счетом " + to_string(Result_Hoda_I2)+ " - " + to_string(Result_Hoda_I);
                 cout << "Выгрузить результат в файл?" << endl;
                 cout << "       Y/N      " << endl;
                 char Vygruzka;
                 do {
-                    cin >> Vygruzka;
-                    system("cls");
-                    if (Vygruzka != 'Y' && Vygruzka != 'N')
-                        cout << "Некорректное значение, попробуйте еще раз" << endl;
-                    else
-                        break;
+                    Vygruzka = Proverka_vvoda(Game_Step, 1);
                 } while (Vygruzka != 'Y' && Vygruzka != 'N');
                 if (Vygruzka == 'Y') {
                     Export_Result(Res2);
@@ -477,13 +542,8 @@ int main()
         }
         cout << "Хотите повторить" << endl;
         cout << "       Y/N      " << endl;
-        cin >> Povtor_igry;
-        do {
-            if (Povtor_igry != 'Y')
-                cout << "Некорректное значение, попробуйте еще раз" << endl;
-            else if (Povtor_igry != 'N')
-                break;
-        } while (Povtor_igry != 'Y'&& Povtor_igry != 'N');
+        //проверка на дурака при выходе из игры
+        Povtor_igry = Proverka_vvoda(Game_Step, 1);
         system("cls");
     } while (Povtor_igry == 'Y');
     system("pause");

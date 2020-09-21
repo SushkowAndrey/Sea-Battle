@@ -6,18 +6,18 @@ using namespace std;
 void Export_Result(string Res) {
 
 	ofstream File;
-
-	File.open("Result.txt", ios::app);
-
-    if (!File.is_open())
+    try
     {
-        //TODO создание исключения
-    }
-    else
-    {
+        File.open("Result.txt", ios::app);
         cout << "Результат сохранен в файл" << endl;
         File << Res << endl;
         File.close();
+
     }
+    catch (...)
+    {
+        cout << "Ошибка сохранения в файл" << endl;
+    }
+
 
 }
