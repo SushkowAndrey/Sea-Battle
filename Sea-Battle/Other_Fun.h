@@ -107,4 +107,18 @@ int Proverka_vvoda(string Sym, int Menu) {
         char Result = Sym[0]; //переменная, в которую преобразуется строка для определения типа игры
         return Result;
     }
+    //проверка на дурака при нажатии на 0
+    else if (Menu == 2) {
+        while (Sym.size() != 1 || Num != 48)
+        {
+            cin >> Sym;
+            for (int i = 0; i < Sym.size(); i++)
+            {
+                Num = Sym[i];
+            }
+            cout << "Некорректное значение, повторите ввод " << endl;
+        }
+        int Result = Sym[0] - '0'; //переменная, в которую преобразуется строка для определения типа игры
+        return Result;
+    }
 }
