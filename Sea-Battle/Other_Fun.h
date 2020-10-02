@@ -122,3 +122,24 @@ int Proverka_vvoda(string Sym, int Menu) {
         return Result;
     }
 }
+
+//функция отображения результатов хода (подбитые корабли и промахи игрока и компьютера)
+void Pokaz_Udar(char arr1[SIZE][SIZE], char arr2[SIZE][SIZE]) {
+    for (int x = 0; x < 10; x++) {
+        cout << "|" << x << "|";
+        for (int y = 0; y < 10; y++) {
+            cout << "|" << arr2[x][y] << "|";
+        }
+        cout << "     ";
+        cout << "|" << x << "|";
+        for (int y = 0; y < 10; y++) {
+            if (arr1[x][y] == 'O' || arr1[x][y] == '*') {
+                cout << "|" << arr1[x][y] << "|";
+            }
+            else {
+                cout << "| |";
+            }
+        }
+        cout << endl;
+    }
+}

@@ -2,6 +2,7 @@
 #include <iostream>
 #include <ctime>
 #include <string>
+#include "Other_Fun.h"
 
 using namespace std;
 
@@ -508,16 +509,16 @@ int HodIgr(char arr[SIZE][SIZE]) {
 }
 
 
-//функция хода компьютера
+/*//функция хода компьютера
 int HodKomp(char arr[SIZE][SIZE])
 {
     int x, y;
     do {
         do {
-            x = rand() % 9;               //строка
+            x = rand() % 10;               //строка
         } while (x < 0 || x > 9);
         do {
-            y = rand() % 9;              //столбец
+            y = rand() % 10;              //столбец
         } while (y < 0 || y > 9);
     } while (arr[x][y] == '*' || arr[x][y] == 'O');
     if (arr[x][y] == 'K') {
@@ -540,25 +541,223 @@ int HodKomp(char arr[SIZE][SIZE])
         arr[x][y] = '*';
         return 0;
     }
-}
+}*/
 
-//функция отображения результатов хода (подбитые корабли и промахи игрока и компьютера)
-void Pokaz_Udar(char arr1[SIZE][SIZE], char arr2[SIZE][SIZE]) {
-    for (int x = 0; x < 10; x++) {
-        cout << "|" << x << "|";
-        for (int y = 0; y < 10; y++) {
-            cout << "|" << arr2[x][y] << "|";
+//функция хода компьютера
+int HodKomp(char arr[SIZE][SIZE], int &x, int &y, bool Ship_DD, bool Ship_GG, bool Ship_RR)
+{
+    //если булевая переменная ложная, то компьютер наносит рандомный удар
+    if (!Ship_DD&&!Ship_GG&&!Ship_RR) {
+        do {
+            do {
+                x = rand() % 10;               //строка
+            } while (x < 0 || x > 9);
+            do {
+                y = rand() % 10;              //столбец
+            } while (y < 0 || y > 9);
+        } while (arr[x][y] == '*' || arr[x][y] == 'O');
+        if (arr[x][y] == 'K') {
+            arr[x][y] = 'O';
+            return 1;   //для повторного удара в случае истины при попадании в однопалубный корабль
         }
-        cout << "     ";
-        cout << "|" << x << "|";
-        for (int y = 0; y < 10; y++) {
-            if (arr1[x][y] == 'O' || arr1[x][y] == '*') {
-                cout << "|" << arr1[x][y] << "|";
-            }
-            else {
-                cout << "| |";
-            }
+        else if (arr[x][y] == 'D') {
+            arr[x][y] = 'O';
+            return 2;   //для повторного удара в случае истины при попадании в двухпалубный корабль DD
         }
-        cout << endl;
+        else if (arr[x][y] == 'G') {
+            arr[x][y] = 'O';
+            return 3;   //для повторного удара в случае истины при попадании в двухпалубный корабль GG
+        }
+        else if (arr[x][y] == 'R') {
+            arr[x][y] = 'O';
+            return 4;   //для повторного удара в случае истины при попадании в двухпалубный корабль RR
+        }
+        else {
+            arr[x][y] = '*';
+            return 0;
+        }
+    }
+    //если булевая переменная истинная, то компьютер наносит удар по иным координатам вокруг раненого корабля
+    else if (Ship_DD) {
+        bool Cycle = false;
+        do {
+            int Сoordinate = rand() % 4; //переменная для выбора дальнейшей координаты (компьютер пытается найти вторую палубы двухпалубного корабля DD)
+            switch (Сoordinate) {
+            case 0: {
+                if (arr[x - 1][y] == 'D') {
+                    arr[x - 1][y] = 'O';
+                    Cycle = true;
+                    return 2;
+                }
+                else if (arr[x - 1][y] == ' ') {
+                    arr[x - 1][y] = '*';
+                    Cycle = true;
+                    return 0;
+                }
+                else Cycle = false;
+            } break;
+            case 1: {
+                if (arr[x][y + 1] == 'D') {
+                    arr[x][y + 1] = 'O';
+                    Cycle = true;
+                    return 2;
+                }
+                else if (arr[x][y + 1] == ' ') {
+                    arr[x][y + 1] = '*';
+                    Cycle = true;
+                    return 0;
+                }
+                else Cycle = false;
+            } break;
+            case 2: {
+                if (arr[x + 1][y] == 'D') {
+                    arr[x + 1][y] = 'O';
+                    Cycle = true;
+                    return 2;
+                }
+                else if (arr[x + 1][y] == ' ') {
+                    arr[x + 1][y] = '*';
+                    Cycle = true;
+                    return 0;
+                }
+                else Cycle = false;
+            } break;
+            case 3: {
+                if (arr[x][y - 1] == 'D') {
+                    arr[x][y - 1] = 'O';
+                    Cycle = true;
+                    return 2;
+                }
+                else if (arr[x][y - 1] == ' ') {
+                    arr[x][y - 1] = '*';
+                    Cycle = true;
+                    return 0;
+                }
+                else Cycle = false;
+            } break;
+            }
+        } while (!Cycle);
+    }
+    else if (Ship_GG) {
+        bool Cycle = false;
+        do {
+            int Сoordinate = rand() % 4; //переменная для выбора дальнейшей координаты (компьютер пытается найти вторую палубы двухпалубного корабля DD)
+            switch (Сoordinate) {
+            case 0: {
+                if (arr[x - 1][y] == 'G') {
+                    arr[x - 1][y] = 'O';
+                    Cycle = true;
+                    return 3;
+                }
+                else if (arr[x - 1][y] == ' ') {
+                    arr[x - 1][y] = '*';
+                    Cycle = true;
+                    return 0;
+                }
+                else Cycle = false;
+            } break;
+            case 1: {
+                if (arr[x][y + 1] == 'G') {
+                    arr[x][y + 1] = 'O';
+                    Cycle = true;
+                    return 3;
+                }
+                else if (arr[x][y + 1] == ' ') {
+                    arr[x][y + 1] = '*';
+                    Cycle = true;
+                    return 0;
+                }
+                else Cycle = false;
+            } break;
+            case 2: {
+                if (arr[x + 1][y] == 'G') {
+                    arr[x + 1][y] = 'O';
+                    Cycle = true;
+                    return 3;
+                }
+                else if (arr[x + 1][y] == ' ') {
+                    arr[x + 1][y] = '*';
+                    Cycle = true;
+                    return 0;
+                }
+                else Cycle = false;
+            } break;
+            case 3: {
+                if (arr[x][y - 1] == 'G') {
+                    arr[x][y - 1] = 'O';
+                    Cycle = true;
+                    return 3;
+                }
+                else if (arr[x][y - 1] == ' ') {
+                    arr[x][y - 1] = '*';
+                    Cycle = true;
+                    return 0;
+                }
+                else Cycle = false;
+            } break;
+            }
+        } while (!Cycle);
+    }
+    else if (Ship_RR) {
+    bool Cycle = false;
+    do {
+        int Сoordinate = rand() % 4; //переменная для выбора дальнейшей координаты (компьютер пытается найти вторую палубы двухпалубного корабля DD)
+        switch (Сoordinate) {
+        case 0: {
+            if (arr[x - 1][y] == 'R') {
+                arr[x - 1][y] = 'O';
+                Cycle = true;
+                return 4;
+            }
+            else if (arr[x - 1][y] == ' ') {
+                arr[x - 1][y] = '*';
+                Cycle = true;
+                return 0;
+            }
+            else Cycle = false;
+        } break;
+        case 1: {
+            if (arr[x][y + 1] == 'R') {
+                arr[x][y + 1] = 'O';
+                Cycle = true;
+                return 4;
+            }
+            else if (arr[x][y + 1] == ' ') {
+                arr[x][y + 1] = '*';
+                Cycle = true;
+                return 0;
+            }
+            else Cycle = false;
+        } break;
+        case 2: {
+            if (arr[x + 1][y] == 'R') {
+                arr[x + 1][y] = 'O';
+                Cycle = true;
+                return 4;
+            }
+            else if (arr[x + 1][y] == ' ') {
+                arr[x + 1][y] = '*';
+                Cycle = true;
+                return 0;
+            }
+            else Cycle = false;
+        } break;
+        case 3: {
+            if (arr[x][y - 1] == 'R') {
+                arr[x][y - 1] = 'O';
+                Cycle = true;
+                return 4;
+            }
+            else if (arr[x][y - 1] == ' ') {
+                arr[x][y - 1] = '*';
+                Cycle = true;
+                return 0;
+            }
+            else Cycle = false;
+        } break;
+        }
+    } while (!Cycle);
     }
 }
+
+
