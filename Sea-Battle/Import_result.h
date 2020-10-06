@@ -9,18 +9,17 @@ void ImportResult(string path) {
 
 	ifstream File;
 
-	File.open("Result.txt", ios::in);
-    if (!File.is_open())
+    try
     {
-        //TODO создание исключения
-    }
-    else
-    {
+        File.open("Result.txt", ios::in);
         char Res;
         while (File.get(Res)) {
             cout << Res;
         }
+        File.close();
     }
-    File.close();
-
+    catch (...)
+    {
+        cout << "Ошибка открытия файла" << endl;
+    }
 }

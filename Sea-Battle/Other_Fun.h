@@ -86,8 +86,9 @@ int Proverka_vvoda(string Sym, int Menu) {
             {
                 Num = Sym[i];
             }
-            system("cls");
-            cout << "Некорректное значение, повторите ввод " << endl;
+            if (Sym.size() != 1 || (Num != 49 && Num != 50 && Num != 51)) {
+                cout << "Некорректное значение главного меню при выборе 1, 2, 3, повторите ввод " << endl;
+            }
         }
         int Result = Sym[0] - '0'; //переменная, в которую преобразуется строка для определения типа игры
         return Result;
@@ -101,8 +102,9 @@ int Proverka_vvoda(string Sym, int Menu) {
             {
                 Num = Sym[i];
             }
-            system("cls");
-            cout << "Некорректное значение, повторите ввод " << endl;
+            if (Sym.size() != 1 || (Num != 78 && Num != 89)) {
+                cout << "Некорректное значение в конце игры при выборе Y/N, повторите ввод " << endl;
+            }
         }
         char Result = Sym[0]; //переменная, в которую преобразуется строка для определения типа игры
         return Result;
@@ -116,9 +118,43 @@ int Proverka_vvoda(string Sym, int Menu) {
             {
                 Num = Sym[i];
             }
-            cout << "Некорректное значение, повторите ввод " << endl;
+            if (Sym.size() != 1 || Num != 48) {
+                cout << "Некорректное значение при нажатии на 0, повторите ввод " << endl;
+            }
         }
         int Result = Sym[0] - '0'; //переменная, в которую преобразуется строка для определения типа игры
+        return Result;
+    }
+    //проверка на дурака при выборе координат цифр
+    else if (Menu == 3) {
+        while (Sym.size() != 1 || (Num < 49 && Num > 57))
+        {
+            cin >> Sym;
+            for (int i = 0; i < Sym.size(); i++)
+            {
+                Num = Sym[i];
+            }
+            if (Sym.size() != 1 || (Num < 49 && Num > 57)) {
+                cout << "Некорректное значение при выборе координат от 1 до 10, повторите ввод " << endl;
+            }
+        }
+        int Result = Sym[0] - '0'; //переменная, в которую преобразуется строка для определения типа игры
+        return Result;
+    }
+    //проверка на дурака при выборе координат букв
+    else if (Menu == 4) {
+        while (Sym.size() != 1 || (Num < 97 && Num > 106))
+        {
+            cin >> Sym;
+            for (int i = 0; i < Sym.size(); i++)
+            {
+                Num = Sym[i];
+            }
+            if (Sym.size() != 1 || (Num < 97 && Num > 106)) {
+                cout << "Некорректное значение при выборе координат от a до j, повторите ввод " << endl;
+            }
+        }
+        char Result = Sym[0]; //переменная, в которую преобразуется строка для определения типа игры
         return Result;
     }
 }
@@ -143,3 +179,113 @@ void Pokaz_Udar(char arr1[SIZE][SIZE], char arr2[SIZE][SIZE]) {
         cout << endl;
     }
 }
+
+//функция отображения результатов хода двух игроков (подбитые корабли и промахи первого и второго игрока)
+void Pokaz_Udar_2(char arr1[SIZE][SIZE], char arr2[SIZE][SIZE]) {
+    for (int x = 0; x < 10; x++) {
+        cout << "|" << x << "|";    //обозначение столбца координат по циклу
+        for (int y = 0; y < 10; y++) {
+            if (arr1[x][y] == 'O' || arr1[x][y] == '*') {
+                cout << "|" << arr1[x][y] << "|";
+            }
+            else {
+                cout << "| |";
+            }
+        }
+        cout << "     ";
+        cout << "|" << x << "|";//обозначение столбца координат по циклу
+        for (int y = 0; y < 10; y++) {
+            if (arr2[x][y] == 'O' || arr2[x][y] == '*') {
+                cout << "|" << arr2[x][y] << "|";
+            }
+            else {
+                cout << "| |";
+            }
+        }
+        cout << endl;
+    }
+}
+/////////не работает
+/*
+//функция повторного удара компьютера по раненому двухпалубному кораблю
+int Repeated_strike(char arr[SIZE][SIZE], int x, int y, char Sym_Ship) {
+    bool Cycle = false; //переменная для повтора цикла
+    do {
+            int Сoordinate = rand() % 4; //переменная для выбора дальнейшей координаты (компьютер пытается найти вторую палубы двухпалубного корабля RR)
+            switch (Сoordinate) {
+            case 0: { //верхняя ячейка
+                if (x==0) Cycle = false; //проверка края игрового поля
+                else {
+                    if (arr[x - 1][y] == Sym_Ship) {
+                        arr[x - 1][y] = 'O';
+                        Cycle = true;
+                        return 2;
+                    }
+                    else if (arr[x - 1][y] == '*') {
+                        Cycle = false;
+                    }
+                    else {
+                        arr[x - 1][y] = '*';
+                        Cycle = true;
+                        return 0;
+                    };
+                }
+        } break;
+            case 1: { //правая ячейка
+                if (y == 9) Cycle = false;
+                else {
+                    if (arr[x][y + 1] == Sym_Ship) {
+                        arr[x][y + 1] = 'O';
+                        Cycle = true;
+                        return 2;
+                    }
+                    else if (arr[x][y + 1] == '*') {
+                        Cycle = false;
+                    }
+                    else {
+                        arr[x][y + 1] = '*';
+                        Cycle = true;
+                        return 0;
+                    };
+                }
+        } break;
+            case 2: { //нижняя ячейка
+                if (x == 9) Cycle = false;
+                else {
+                    if (arr[x + 1][y] == Sym_Ship) {
+                        arr[x + 1][y] = 'O';
+                        Cycle = true;
+                        return 2;
+                    }
+                    else if (arr[x + 1][y] == '*') {
+                        Cycle = false;
+                    }
+                    else {
+                        arr[x + 1][y] = '*';
+                        Cycle = true;
+                        return 0;
+                    };
+                }
+        } break;
+            case 3: { //левая ячейка
+                if (y == 0) Cycle = false;
+                else {
+                    if (arr[x][y - 1] == Sym_Ship) {
+                        arr[x][y - 1] = 'O';
+                        Cycle = true;
+                        return 2;
+                    }
+                    else if (arr[x][y - 1] == '*') {
+                        Cycle = false;
+                    }
+                    else {
+                        arr[x][y - 1] = '*';
+                        Cycle = true;
+                        return 0;
+                    };
+                }
+        } break;
+        }
+    } while (!Cycle);
+}
+*/

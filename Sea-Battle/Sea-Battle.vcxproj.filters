@@ -29,13 +29,16 @@
     <ClInclude Include="Import_result.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="Fun_Igr_and_Komp.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
     <ClInclude Include="Function_Igr1_and_Igr2.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="Other_Fun.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Сonducting_a_battle_I_K.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="The_alignment_of_the_ships_I_K.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>

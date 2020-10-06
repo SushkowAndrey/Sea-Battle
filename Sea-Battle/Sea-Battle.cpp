@@ -9,7 +9,8 @@
 #include "Export_result.h"
 #include "Import_result.h"
 #include "Players.h"
-#include "Fun_Igr_and_Komp.h"
+#include "The_alignment_of_the_ships_I_K.h"
+#include "Сonducting_a_battle_I_K.h"
 
 using namespace std;
 
@@ -23,11 +24,15 @@ int main()
     int Povtor_hoda_Igr_Komp;//переменная для определения повтора хода игрока/компьютера
     bool Povtor_hoda = false;//переменная для определения повтора хода двух игроков
     bool Wound_DD=false, Wound_GG = false, Wound_RR = false; //ранил компьютер корабль DD, GG или RR игрока , изначально присвоено нулевое значение
+    bool Wound_TTT = false; //ранил компьютер корабль TTT игрока , изначально присвоено нулевое значение
     int Paluba_2_I_DD = 0, Paluba_2_I_GG = 0, Paluba_2_I_RR = 0; //переменная для расчета количества подбитых палуб первого двухпалубного корабля игрока
+    int Paluba_3_I_TTT = 0;//переменная для расчета количества подбитых палуб первого трехпалубного корабля игрока
     int Paluba_2_K_DD = 0, Paluba_2_K_GG = 0, Paluba_2_K_RR = 0; //переменная для расчета количества подбитых палуб первого двухпалубного корабля компьютера
+    int Paluba_3_K_TTT = 0;//переменная для расчета количества подбитых палуб треххпалубного корабля компьютера
     int X = 0, Y = 0; //переменные для записи координат удара компьютером
+    int Enumeration_3_TTT = 0; // переменная для записи выбора компьютера при первом попадании в трехпалубный корабль игрока
     char Povtor_igry; //переменная для определения повтора игры по ее окончанию
-    string Game_Step;    //переменная для определения последовательности при выборе
+    string Game_Step;    //переменная для определения корректности ввода символа при выборе
     //процесс игры
     do {
         //массивы игровых полей
@@ -46,7 +51,6 @@ int main()
         cout << "            3-Посмотреть прошлый результат            " << endl;
         // цикл выбора количества игроков 
         // главное меню
-        int Num=0; //переменная для проверки на правильность ввода данных, опреденяет номер символа по таблице ASCII
         //проверка на дурака
         int Tip_Igry = Proverka_vvoda(Game_Step, 0);
         system("cls");
@@ -54,39 +58,48 @@ int main()
             // игра с компьютером
         case 1:
         {
-           //количество кораблей 4 (4 однопалубных, 3 двухпалубных)
-            int Ship_Num=10, //8 палуб всего (4*1+3*2)
+           //количество кораблей 4 (4 однопалубных, 3 двухпалубных, 1 трехпалубный)
+            int Ship_Num=13, //8 палуб всего (4*1+3*2+1*3)
             count = 0; //count - счетчик для работы циклов
             //переменная для определения повтора удара
             system("cls");
-            //заполнение игрового поля-шаблон игрового поля
-            cout << "Заполните игровое поле, выбрав необходимые координаты" << endl;
-            Gor_Granica(arr3, SIZE);//цикл для обозначения горизонтальной строки координат
-            cout << endl;
-            for (int i = 0; i < SIZE; i++) {
-                cout << "|" << i << "|";          //цикл для обозначения вертикальной строки координат
-                for (int j = 0; j < SIZE; j++) {
-                    cout << "| |";
-                }
-                cout << endl;
-            }
-            //расстановка кораблей игроком
-            //расстановка однопалубных кораблей
-            while (count < 4) {
-                Rasstanovka_kor(Battle_Pole_I);
+            // выбор способа заполнения поля игрока
+            cout << " Выберите способ заполнения вашего поля  " << endl;
+            cout << "      1-Вручную  2-Автоматически            " << endl;
+            int Method_of_filling_in_the_field = Proverka_vvoda(Game_Step, 0);//дополнить два выбора вариантов
+            switch (Method_of_filling_in_the_field) {
+                //заполнение игрового поля вручную
+            case 1:
+            {
                 system("cls");
-                cout << "Поле игрока" << endl;
-                //горизонтальная граница поля
-                for (int i = 0; i < 11; i++) {
-                    cout << "|" << arr3[i] << "|";
-                }
+                //шаблон игрового поля
+                cout << "Заполните игровое поле, выбрав необходимые координаты" << endl;
+                Gor_Granica(arr3, SIZE);//цикл для обозначения горизонтальной строки координат
                 cout << endl;
-                //показ однопалубных кораблей
-                Pokaz_Ship(Battle_Pole_I);
-                count++;
-            }
-           //расстановка первого двухпалубного кораблей 
-                //расстановка первой палубы двухпалубного корабля
+                for (int i = 0; i < SIZE; i++) {
+                    cout << "|" << i << "|";          //цикл для обозначения вертикальной строки координат
+                    for (int j = 0; j < SIZE; j++) {
+                        cout << "| |";
+                    }
+                    cout << endl;
+                }
+                //расстановка кораблей игроком
+                //расстановка однопалубных кораблей
+                while (count < 4) {
+                    Rasstanovka_kor(Battle_Pole_I);
+                    system("cls");
+                    cout << "Поле игрока" << endl;
+                    //горизонтальная граница поля
+                    for (int i = 0; i < 11; i++) {
+                        cout << "|" << arr3[i] << "|";
+                    }
+                    cout << endl;
+                    //показ однопалубных кораблей
+                    Pokaz_Ship(Battle_Pole_I);
+                    count++;
+                }
+                //расстановка первого двухпалубного кораблей 
+                     //расстановка первой палубы двухпалубного корабля
                 Rasstanovka_kor_2_pal_1(Battle_Pole_I);
                 system("cls");
                 cout << "Поле игрока" << endl;
@@ -148,28 +161,112 @@ int main()
                 }
                 cout << endl;
                 Pokaz_Ship(Battle_Pole_I);
+                //расстановка первого трехпалубного кораблей 
+                //расстановка первой палубы трехпалубного корабля
+                Rasstanovka_kor_3_pal_1(Battle_Pole_I);
+                system("cls");
+                cout << "Поле игрока" << endl;
+                //горизонтальная граница поля
+                for (int i = 0; i < 11; i++) {
+                    cout << "|" << arr3[i] << "|";
+                }
+                cout << endl;
+                Pokaz_Ship(Battle_Pole_I);
+                //расстановка второй палубы трехпалубного корабля
+                Rasstanovka_kor_3_pal_2(Battle_Pole_I);
+                system("cls");
+                cout << "Поле игрока" << endl;
+                //горизонтальная граница поля
+                for (int i = 0; i < 11; i++) {
+                    cout << "|" << arr3[i] << "|";
+                }
+                cout << endl;
+                Pokaz_Ship(Battle_Pole_I);
+                //расстановка третьей палубы трехпалубного корабля
+                Rasstanovka_kor_3_pal_3(Battle_Pole_I);
+                system("cls");
+                cout << "Поле игрока" << endl;
+                //горизонтальная граница поля
+                for (int i = 0; i < 11; i++) {
+                    cout << "|" << arr3[i] << "|";
+                }
+                cout << endl;
+                Pokaz_Ship(Battle_Pole_I);
+
+
+            } break;
+            //заполнение игрового поля автоматически
+            /////////////////ЗАПОЛНЯЕТСЯ, НО НЕ ИСПОЛЬЗУЕТСЯ В ДАЛЬНЕЙШЕМ
+            case 2: 
+            {
+                char Battle_Pole_I_auto[SIZE][SIZE];
+                //цикл для перебора различных вариантов расположения кораблей
+                int Confirmation_of_the_choice; //переменная для определении выбора расположения кораблей при автоматическом заполнении поля игрока
+                do
+                {
+                    // новый массив, который после окончания выбора порядка расположения кораблей приравнивается к первоначальному
+                    char Battle_Pole_I[SIZE][SIZE] = { };
+                    system("cls");
+                    //расстановка кораблей автоматически
+                    //шаблон игрового поля
+                    cout << "Выберите игровое поле" << endl;
+                    Gor_Granica(arr3, SIZE);//цикл для обозначения горизонтальной строки координат
+                    //расстановка однопалубных кораблей
+                    count = 0;
+                    while (count < 4) {
+                        Rasstanovka_kor_Komp(Battle_Pole_I);
+                        count++;
+                    }
+                    //расстановка двухпалубных кораблей 
+                    Rasstanovka_kor_2_pal_1_Komp(Battle_Pole_I);
+                    Rasstanovka_kor_2_pal_2_Komp(Battle_Pole_I);
+                    Rasstanovka_kor_2_2_pal_1_Komp(Battle_Pole_I);
+                    Rasstanovka_kor_2_2_pal_2_Komp(Battle_Pole_I);
+                    Rasstanovka_kor_2_3_pal_1_Komp(Battle_Pole_I);
+                    Rasstanovka_kor_2_3_pal_2_Komp(Battle_Pole_I);
+                    Rasstanovka_kor_3_pal_1_Komp(Battle_Pole_I);
+                    Rasstanovka_kor_3_pal_2_Komp(Battle_Pole_I);
+                    Rasstanovka_kor_3_pal_3_Komp(Battle_Pole_I);
+                    cout << endl;
+                    Pokaz_Ship(Battle_Pole_I);
+                    cout <<"Если хотите поменять поле нажмите любую кнопку, если поле устраивает нажмите 0"<< endl;
+                    cin >> Confirmation_of_the_choice;
+                    if (Confirmation_of_the_choice == 0) {
+                        Battle_Pole_I[SIZE][SIZE] = Battle_Pole_I_auto[SIZE][SIZE];
+                    }
+                    system("cls");
+                } while (Confirmation_of_the_choice != 0);
+            } break;
+            }
             //расстановка кораблей компьютером
                 //расстановка однопалубных кораблей
                 count = 0;
-                while (count < 4) {
+                   while (count < 4) {
                     Rasstanovka_kor_Komp(Battle_Pole_Komp);
                     count++;
                 }
             //расстановка двухпалубных кораблей 
             //расстановка первой и второй палубы двухпалубного корабля
+          
             Rasstanovka_kor_2_pal_1_Komp(Battle_Pole_Komp);
             Rasstanovka_kor_2_pal_2_Komp(Battle_Pole_Komp);
             Rasstanovka_kor_2_2_pal_1_Komp(Battle_Pole_Komp);
             Rasstanovka_kor_2_2_pal_2_Komp(Battle_Pole_Komp);
             Rasstanovka_kor_2_3_pal_1_Komp(Battle_Pole_Komp);
             Rasstanovka_kor_2_3_pal_2_Komp(Battle_Pole_Komp);
+            Rasstanovka_kor_3_pal_1_Komp(Battle_Pole_Komp);
+            Rasstanovka_kor_3_pal_2_Komp(Battle_Pole_Komp);
+            Rasstanovka_kor_3_pal_3_Komp(Battle_Pole_Komp);
+            cout << "Поле компьютера" << endl;
+            Gor_Granica(arr3, SIZE);//цикл для обозначения горизонтальной строки координат
             cout << endl;
             Pokaz_Ship(Battle_Pole_Komp); //показ поля компьютера (если необходимо, в идеале мы не видим корабли компьютера)
-            count = 1;
+            count = 1; //переменная считает номер удара, начинается с первого (1)
             ////////////////////////////////// процесс боя игрока и компьютера /////////////////////////////////////
             do {
                 //ход игрока
-                cout << "Координата удара компьютера (строка) " << X << "; Координата компьютера (столбец)" << Y << "; булевская переменная " << Wound_DD << endl;
+                cout << "Координата Х " << X << "; координата Y " << Y << "; Булева DD " << Wound_DD << "; Булева GG " << Wound_GG << "; Булева RR " << Wound_RR << endl;
+                cout << "Выбор компьютером чистал при попадании в трехпалубный корабль " << Enumeration_3_TTT << endl;
                 cout << "Счет " << Result_Hoda_I << "/" << Ship_Num << " (Игрок) - (Компьютер) " << Result_Hoda_K << "/" << Ship_Num << endl;
                 cout << "Игрок наносит " << count << " удар" << endl; // переменная count показывает число ударов
                 do { //цикл для определения повторения хода
@@ -182,11 +279,6 @@ int main()
                     cout << endl;
                     Pokaz_Udar(Battle_Pole_Komp, Battle_Pole_I);
                     count++;
-                    // подсчет количества подбитых кораблей компьютера для окончания хода
-                    Result_Hoda_I = Result(Battle_Pole_Komp);
-                    if (Result_Hoda_I == Ship_Num) {
-                        break;
-                    }
                     //цикл для проверки попадания
                     switch (Povtor_hoda_Igr_Komp)
                     {
@@ -226,7 +318,21 @@ int main()
                         else
                             cout << "Ранен. Повторите удар" << endl;
                     }
-                    break;            
+                    break;
+                    case 5: //если есть попадание в трехпалубный корабль TTT
+                    {
+                        Paluba_3_I_TTT++; //при попадании увеличиваем количество подпитых палуб трехпалубного корабля
+                        if (Paluba_3_I_TTT == 3)
+                            cout << "Корабль компьютера уничтожен. Повторите удар" << endl;
+                        else
+                            cout << "Ранен. Повторите удар" << endl;
+                    }
+                    break;
+                    }
+                    // подсчет количества подбитых кораблей компьютера для окончания хода
+                    Result_Hoda_I = Result(Battle_Pole_Komp);
+                    if (Result_Hoda_I == Ship_Num) {
+                        break;
                     }
                 } while (Povtor_hoda_Igr_Komp!=0);
                 // подсчет количества подбитых кораблей компьютера для окончания боя
@@ -237,10 +343,7 @@ int main()
                 //ход компьютера///////////////////////////////////////////////////
                 do {
                     //временные переменные для проверки 
-                    cout << "Счет " << Result_Hoda_I << "/" << Ship_Num << " (Игрок) - (Компьютер) " << Result_Hoda_K << "/" << Ship_Num << endl;
-                    cout << "Компьютер наносит " << count << " удар" << endl; // переменная count показывает число ударов
-                    cout << "Нажмите 0, что бы компьютер ударил" << endl;
-                    Povtor_hoda_Igr_Komp = HodKomp(Battle_Pole_I, X, Y, Wound_DD, Wound_GG, Wound_RR);
+                    Povtor_hoda_Igr_Komp = HodKomp(Battle_Pole_I, X, Y, Wound_DD, Wound_GG, Wound_RR, Wound_TTT, Enumeration_3_TTT);
                     system("cls");
                     cout << "           Поле игрока                         Компьютера" << endl;
                     Gor_Granica(arr3, SIZE);//цикл для обозначения горизонтальной строки координат
@@ -249,9 +352,6 @@ int main()
                     cout << endl;
                     Pokaz_Udar(Battle_Pole_Komp, Battle_Pole_I);
                     count++;
-                    if (Result_Hoda_K == Ship_Num) {
-                        break;
-                    }
                     //цикл для проверки попадания
                     switch (Povtor_hoda_Igr_Komp)
                     {
@@ -330,6 +430,31 @@ int main()
                         }
                         else {
                             Wound_RR = false;
+
+                            cout << "Ваш корабль уничтожен. Нажмите 0, что бы продолжить" << endl;
+                            int Povt_K;
+                            //проверка на дурака при продолжении хода
+                            do {
+                                Povt_K = Proverka_vvoda(Game_Step, 2);
+                            } while (Povt_K != 0);
+                        }
+                    }
+                    break;
+                    case 5: //если есть попадание в трехпалубный корабль TTT
+                    {
+                        Paluba_3_K_TTT++; //при попадании увеличиваем количество подпитых палуб первого двухпалубного корабля
+                        if (Paluba_3_K_TTT != 3) {
+                            Wound_TTT = true;
+                            cout << "Ваш корабль ранен. Нажмите 0, что бы продолжить" << endl;
+                            int Povt_K;
+                            //проверка на дурака при продолжении хода
+                            do {
+                                Povt_K = Proverka_vvoda(Game_Step, 2);
+                            } while (Povt_K != 0);
+                        }
+                        else {
+                            Wound_TTT = false;
+                            Enumeration_3_TTT = 0;
                             cout << "Ваш корабль уничтожен. Нажмите 0, что бы продолжить" << endl;
                             int Povt_K;
                             //проверка на дурака при продолжении хода
@@ -352,7 +477,7 @@ int main()
             if (PobedaI) {
                 cout << "Выиграл Игрок со счетом " << Result_Hoda_I << " - " << Result_Hoda_K << endl;
                 //переменная (строка) для записи результатов игры
-                string Res1 = "Выиграл Игрок со счетом " + to_string(Result_Hoda_I) + " - " + to_string(Result_Hoda_K);
+                string Res1 = "Выиграл Игрок в бою с компьютером со счетом " + to_string(Result_Hoda_I) + " - " + to_string(Result_Hoda_K);
                 //выгрузка результата игры в файл
                 cout << "Выгрузить результат в файл?" << endl;
                 cout << "       Y/N      " << endl;
@@ -370,7 +495,7 @@ int main()
             else if (PobedaKomp) {
                 cout << "Выиграл Компьютер со счетом " << Result_Hoda_K << " - " << Result_Hoda_I << endl;
                 //переменная (строка) для записи результатов игры
-                string Res2 = "Выиграл Игрок со счетом " + to_string(Result_Hoda_K) + " - " + to_string(Result_Hoda_I);
+                string Res2 = "Выиграл Компьютер в бою с игроком со счетом " + to_string(Result_Hoda_K) + " - " + to_string(Result_Hoda_I);
                 //выгрузка результата игры в файл
                 cout << "Выгрузить результат в файл?" << endl;
                 cout << "       Y/N      " << endl;

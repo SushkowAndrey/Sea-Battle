@@ -85,28 +85,3 @@ bool HodIgr_2(char arr[SIZE][SIZE]) {
 
 
 
-//функция отображения результатов хода двух игроков (подбитые корабли и промахи первого и второго игрока)
-void Pokaz_Udar_2(char arr1[SIZE][SIZE], char arr2[SIZE][SIZE]) {
-    for (int x = 0; x < 10; x++) {
-        cout << "|" << x << "|";    //обозначение столбца координат по циклу
-        for (int y = 0; y < 10; y++) {
-            if (arr1[x][y] == 'O' || arr1[x][y] == '*') {
-                cout << "|" << arr1[x][y] << "|";
-            }
-            else {
-                cout << "| |";
-            }
-        }
-        cout << "     ";
-        cout << "|" << x << "|";//обозначение столбца координат по циклу
-        for (int y = 0; y < 10; y++) {
-            if (arr2[x][y] == 'O' || arr2[x][y] == '*') {
-                cout << "|" << arr2[x][y] << "|";
-            }
-            else {
-                cout << "| |";
-            }
-        }
-        cout << endl;
-    }
-}
