@@ -44,7 +44,7 @@ int Zamena_B_na_Num(char Koord) {
     return y;
 }
 // функци€ горизонтальной границы координат
-void Gor_Granica(char* arr, int size) {
+inline void Gor_Granica(char* arr, int size) {
     for (int i = 0; i < (SIZE + 1); i++) {  //верхн€€ граница координат
         cout << "|" << *(arr + i) << "|";
     }
@@ -73,6 +73,24 @@ int Result(char arr[SIZE][SIZE]) {
     }
     return count;
 }
+
+//функци€ дл€ проверки на дурака друга€
+int Checking_the_symbol(string M)
+{
+    if (M.size() != 1) return 10;
+    else {
+        int Num;
+        for (int i = 0; i < M.size(); i++)
+        {
+            Num = M[i];
+        }
+        if (Num > 47 && Num < 56) {
+            return Num - '0';
+        }
+        else return 10;
+    }
+}
+
 
 //функци€ дл€ проверки на дурака
 int Proverka_vvoda(string Sym, int Menu) {
@@ -205,87 +223,259 @@ void Pokaz_Udar_2(char arr1[SIZE][SIZE], char arr2[SIZE][SIZE]) {
         cout << endl;
     }
 }
+//очистка пол€ при автоматическом заполнении игрового пол€
+void The_clearing_of_a_field(char arr[SIZE][SIZE]) {
+    for (int x = 0; x < 10; x++) {
+        cout << "|" << x << "|";
+        for (int y = 0; y < 10; y++) {
+            arr[x][y] = ' ';
+        }
+        cout << endl;
+    }
+}
+
+//выбор второй палубы корабл€
+//данна€ проверка нужна дл€ того, что бы €чейки не перескакивали с одного кра€ пол€ на другой
+//если у нас х=0, то у можно поставить на другом краю пол€, поэтому нужно исключить проверку пол€ слева, если у=9
+bool The_choice_of_the_second_deck(int x, int y, char arr[SIZE][SIZE], char Sym_Ship) {
+    if (y == 9 && (arr[x - 1][y] == Sym_Ship || arr[x + 1][y] == Sym_Ship || arr[x][y - 1] == Sym_Ship))
+        return true;
+    else if (y != 9 && (arr[x - 1][y] == Sym_Ship || arr[x + 1][y] == Sym_Ship || arr[x][y - 1] == Sym_Ship || arr[x][y + 1] == Sym_Ship))
+        return true;
+    else
+        return false;
+}
+
+//функци€ проверки свободных €чеек вокруг двухпалубных кораблей во все стороны
+bool Checking_cells_2_up(char arr[SIZE][SIZE], int x, int y) {
+    //проверка свободных €чeeк вокруг координаты вверх
+    bool A=true;
+    for (int i = -2; i < 2; i++) {
+        for (int j = -1; j < 2; j++) {
+            if (arr[x + i][y + j] == 'K' || arr[x + i][y + j] == 'D' || arr[x + i][y + j] == 'G' || arr[x + i][y + j] == 'R' || arr[x + i][y + j] == 'T') {
+                //проверка кра€ пол€, иначе будут съезжать €чейки
+                if ((x == 0 && i < 0) || (x == 9 && i > 0) || (y == 0 && j < 0) || (y == 9 && j > 0)) {
+                    continue;
+                }
+                else {
+                    A = false;
+                    break;
+                }
+            }
+        }
+        if (!A)
+            return A;
+    }
+}
+bool Checking_cells_2_right(char arr[SIZE][SIZE], int x, int y) {
+    //проверка свободных €чeeк вокруг координаты вправо
+    bool B = true;
+    for (int i = -1; i < 2; i++) {
+        for (int j = -1; j < 3; j++) {
+            if (arr[x + i][y + j] == 'K' || arr[x + i][y + j] == 'D' || arr[x + i][y + j] == 'G' || arr[x + i][y + j] == 'R' || arr[x + i][y + j] == 'T') {
+                //проверка кра€ пол€, иначе будут съезжать €чейки
+                if ((x == 0 && i < 0) || (x == 9 && i > 0) || (y == 0 && j < 0) || (y == 9 && j > 0)) {
+                    continue;
+                }
+                else {
+                    B = false;
+                    break;
+                }
+            }
+        }
+        if (!B)
+            return B;
+    }
+}
+bool Checking_cells_2_down(char arr[SIZE][SIZE], int x, int y) {
+    //проверка свободных €чeeк вокруг координаты вниз
+    bool C = true;
+    for (int i = -1; i < 3; i++) {
+        for (int j = -1; j < 2; j++) {
+            if (arr[x + i][y + j] == 'K' || arr[x + i][y + j] == 'D' || arr[x + i][y + j] == 'G' || arr[x + i][y + j] == 'R' || arr[x + i][y + j] == 'T') {
+                //проверка кра€ пол€, иначе будут съезжать €чейки
+                if ((x == 0 && i < 0) || (x == 9 && i > 0) || (y == 0 && j < 0) || (y == 9 && j > 0)) {
+                    continue;
+                }
+                else {
+                    C = false;
+                    break;
+                }
+            }
+        }
+        if (!C)
+            return C;
+    }
+}
+bool Checking_cells_2_left(char arr[SIZE][SIZE], int x, int y) {
+    //проверка свободных €чeeк вокруг координаты влево
+    bool D = true;
+    for (int i = -1; i < 2; i++) {
+        for (int j = -2; j < 2; j++) {
+            if (arr[x + i][y + j] == 'K' || arr[x + i][y + j] == 'D' || arr[x + i][y + j] == 'G' || arr[x + i][y + j] == 'R' || arr[x + i][y + j] == 'T') {
+                //проверка кра€ пол€, иначе будут съезжать €чейки
+                if ((x == 0 && i < 0) || (x == 9 && i > 0) || (y == 0 && j < 0) || (y == 9 && j > 0)) {
+                    continue;
+                }
+                else {
+                    D = false;
+                    break;
+                }
+            }
+        }
+        if (!D)
+            return D;
+    }
+}
+
+//проверка наличи€ кораблей вокруг €чейки на один ход
+bool Check_the_ships_around(char arr[SIZE][SIZE], int x, int y) {
+    bool A = true;
+    for (int i = -1; i < 2; i++) {
+        for (int j = -1; j < 2; j++) {
+            if (arr[x + i][y + j] == 'K') {
+                //проверка кра€ пол€, иначе будут съeзжать €чейки
+                if ((x == 0 && i < 0) || (x == 9 && i > 0) || (y == 0 && j < 0) || (y == 9 && j > 0)) {
+                    continue;
+                }
+                else {
+                    A = false;
+                    break;
+                }
+            }
+        }
+        if (!A)
+            break;
+    }
+    return A;
+}
+//перегрузка дл€ второго двухпалубного корабл€
+bool Check_the_ships_around(char arr[SIZE][SIZE], int x, int y, char Sym_Ship) {
+    bool A = true;
+    for (int i = -1; i < 2; i++) {
+        for (int j = -1; j < 2; j++) {
+            if (arr[x + i][y + j] == 'K'|| arr[x + i][y + j] == Sym_Ship) {
+                //проверка кра€ пол€, иначе будут съeзжать €чейки
+                if ((x == 0 && i < 0) || (x == 9 && i > 0) || (y == 0 && j < 0) || (y == 9 && j > 0)) {
+                    continue;
+                }
+                else {
+                    A = false;
+                    break;
+                }
+            }
+        }
+        if (!A)
+            break;
+    }
+    return A;
+}
+
+//перегрузка дл€ третьего двухпалубного корабл€
+bool Check_the_ships_around(char arr[SIZE][SIZE], int x, int y, char Sym_Ship, char Sym_Ship_2) {
+    bool A = true;
+    for (int i = -1; i < 2; i++) {
+        for (int j = -1; j < 2; j++) {
+            if (arr[x + i][y + j] == 'K' || arr[x + i][y + j] == Sym_Ship || arr[x + i][y + j] == Sym_Ship_2) {
+                //проверка кра€ пол€, иначе будут съeзжать €чейки
+                if ((x == 0 && i < 0) || (x == 9 && i > 0) || (y == 0 && j < 0) || (y == 9 && j > 0)) {
+                    continue;
+                }
+                else {
+                    A = false;
+                    break;
+                }
+            }
+        }
+        if (!A)
+            break;
+    }
+    return A;
+}
+
+
 /////////не работает
+
 /*
 //функци€ повторного удара компьютера по раненому двухпалубному кораблю
 int Repeated_strike(char arr[SIZE][SIZE], int x, int y, char Sym_Ship) {
     bool Cycle = false; //переменна€ дл€ повтора цикла
-    do {
-            int —oordinate = rand() % 4; //переменна€ дл€ выбора дальнейшей координаты (компьютер пытаетс€ найти вторую палубы двухпалубного корабл€ RR)
-            switch (—oordinate) {
-            case 0: { //верхн€€ €чейка
-                if (x==0) Cycle = false; //проверка кра€ игрового пол€
-                else {
-                    if (arr[x - 1][y] == Sym_Ship) {
-                        arr[x - 1][y] = 'O';
-                        Cycle = true;
-                        return 2;
-                    }
-                    else if (arr[x - 1][y] == '*') {
-                        Cycle = false;
-                    }
-                    else {
-                        arr[x - 1][y] = '*';
-                        Cycle = true;
-                        return 0;
-                    };
-                }
-        } break;
-            case 1: { //права€ €чейка
-                if (y == 9) Cycle = false;
-                else {
-                    if (arr[x][y + 1] == Sym_Ship) {
-                        arr[x][y + 1] = 'O';
-                        Cycle = true;
-                        return 2;
-                    }
-                    else if (arr[x][y + 1] == '*') {
-                        Cycle = false;
-                    }
-                    else {
-                        arr[x][y + 1] = '*';
-                        Cycle = true;
-                        return 0;
-                    };
-                }
-        } break;
-            case 2: { //нижн€€ €чейка
-                if (x == 9) Cycle = false;
-                else {
-                    if (arr[x + 1][y] == Sym_Ship) {
-                        arr[x + 1][y] = 'O';
-                        Cycle = true;
-                        return 2;
-                    }
-                    else if (arr[x + 1][y] == '*') {
-                        Cycle = false;
-                    }
-                    else {
-                        arr[x + 1][y] = '*';
-                        Cycle = true;
-                        return 0;
-                    };
-                }
-        } break;
-            case 3: { //лева€ €чейка
-                if (y == 0) Cycle = false;
-                else {
-                    if (arr[x][y - 1] == Sym_Ship) {
-                        arr[x][y - 1] = 'O';
-                        Cycle = true;
-                        return 2;
-                    }
-                    else if (arr[x][y - 1] == '*') {
-                        Cycle = false;
-                    }
-                    else {
-                        arr[x][y - 1] = '*';
-                        Cycle = true;
-                        return 0;
-                    };
-                }
-        } break;
-        }
-    } while (!Cycle);
+       do {
+           int —oordinate = rand() % 4; //переменна€ дл€ выбора дальнейшей координаты (компьютер пытаетс€ найти вторую палубы двухпалубного корабл€ RR)
+           switch (—oordinate) {
+           case 0: { //верхн€€ €чейка
+               if (x==0) Cycle = false; //проверка кра€ игрового пол€
+               else {
+                   if (arr[x - 1][y] == Sym_Ship) {
+                       arr[x - 1][y] = 'O';
+                       Cycle = true;
+                       return 2;
+                   }
+                   else if (arr[x - 1][y] == '*') {
+                       Cycle = false;
+                   }
+                   else {
+                       arr[x - 1][y] = '*';
+                       Cycle = true;
+                       return 0;
+                   };
+               }
+           } break;
+           case 1: { //права€ €чейка
+               if (y == 9) Cycle = false;
+               else {
+                   if (arr[x][y + 1] == Sym_Ship) {
+                       arr[x][y + 1] = 'O';
+                       Cycle = true;
+                       return 2;
+                   }
+                   else if (arr[x][y + 1] == '*') {
+                       Cycle = false;
+                   }
+                   else {
+                       arr[x][y + 1] = '*';
+                       Cycle = true;
+                       return 0;
+                   };
+               }
+           } break;
+           case 2: { //нижн€€ €чейка
+               if (x == 9) Cycle = false;
+               else {
+                   if (arr[x + 1][y] == Sym_Ship) {
+                       arr[x + 1][y] = 'O';
+                       Cycle = true;
+                       return 2;
+                   }
+                   else if (arr[x + 1][y] == '*') {
+                       Cycle = false;
+                   }
+                   else {
+                       arr[x + 1][y] = '*';
+                       Cycle = true;
+                       return 0;
+                   };
+               }
+           } break;
+           case 3: { //лева€ €чейка
+               if (y == 0) Cycle = false;
+               else {
+                   if (arr[x][y - 1] == Sym_Ship) {
+                       arr[x][y - 1] = 'O';
+                       Cycle = true;
+                       return 2;
+                   }
+                   else if (arr[x][y - 1] == '*') {
+                       Cycle = false;
+                   }
+                   else {
+                       arr[x][y - 1] = '*';
+                       Cycle = true;
+                       return 0;
+                   };
+               }
+           } break;
+           }
+       } while (!Cycle);
 }
 */

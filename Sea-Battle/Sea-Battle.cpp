@@ -9,7 +9,8 @@
 #include "Export_result.h"
 #include "Import_result.h"
 #include "Players.h"
-#include "The_alignment_of_the_ships_I_K.h"
+#include "The_alignment_of_the_ships_I.h"
+#include "The_alignment_of_the_ships_K.h"
 #include "Сonducting_a_battle_I_K.h"
 
 using namespace std;
@@ -52,7 +53,16 @@ int main()
         // цикл выбора количества игроков 
         // главное меню
         //проверка на дурака
-        int Tip_Igry = Proverka_vvoda(Game_Step, 0);
+        int Tip_Igry;
+        do
+        {
+            cin >> Game_Step;
+            Tip_Igry = Checking_the_symbol(Game_Step);
+            if (Tip_Igry != 1 && Tip_Igry != 2 && Tip_Igry != 3) {
+                cout << "Некорректное значение главного меню при выборе 1, 2, 3, повторите ввод " << endl;
+            }
+        } while (Tip_Igry!=1 && Tip_Igry!=2 && Tip_Igry != 3);
+        //int Tip_Igry = Proverka_vvoda(Game_Step, 0);
         system("cls");
         switch (Tip_Igry) {
             // игра с компьютером
@@ -66,7 +76,15 @@ int main()
             // выбор способа заполнения поля игрока
             cout << " Выберите способ заполнения вашего поля  " << endl;
             cout << "      1-Вручную  2-Автоматически            " << endl;
-            int Method_of_filling_in_the_field = Proverka_vvoda(Game_Step, 0);//дополнить два выбора вариантов
+            int Method_of_filling_in_the_field;
+            do
+            {
+                cin >> Game_Step;
+                Method_of_filling_in_the_field = Checking_the_symbol(Game_Step);
+                if (Method_of_filling_in_the_field != 1 && Method_of_filling_in_the_field != 2) {
+                    cout << "Некорректное значение меню при выборе 1, 2, повторите ввод " << endl;
+                }
+            } while (Method_of_filling_in_the_field != 1 && Method_of_filling_in_the_field != 2);
             switch (Method_of_filling_in_the_field) {
                 //заполнение игрового поля вручную
             case 1:
@@ -199,13 +217,11 @@ int main()
             /////////////////ЗАПОЛНЯЕТСЯ, НО НЕ ИСПОЛЬЗУЕТСЯ В ДАЛЬНЕЙШЕМ
             case 2: 
             {
-                char Battle_Pole_I_auto[SIZE][SIZE];
+                //char Battle_Pole_I_auto[SIZE][SIZE];
                 //цикл для перебора различных вариантов расположения кораблей
                 int Confirmation_of_the_choice; //переменная для определении выбора расположения кораблей при автоматическом заполнении поля игрока
                 do
                 {
-                    // новый массив, который после окончания выбора порядка расположения кораблей приравнивается к первоначальному
-                    char Battle_Pole_I[SIZE][SIZE] = { };
                     system("cls");
                     //расстановка кораблей автоматически
                     //шаблон игрового поля
@@ -231,9 +247,7 @@ int main()
                     Pokaz_Ship(Battle_Pole_I);
                     cout <<"Если хотите поменять поле нажмите любую кнопку, если поле устраивает нажмите 0"<< endl;
                     cin >> Confirmation_of_the_choice;
-                    if (Confirmation_of_the_choice == 0) {
-                        Battle_Pole_I[SIZE][SIZE] = Battle_Pole_I_auto[SIZE][SIZE];
-                    }
+                    if (Confirmation_of_the_choice != 0) The_clearing_of_a_field(Battle_Pole_I);
                     system("cls");
                 } while (Confirmation_of_the_choice != 0);
             } break;

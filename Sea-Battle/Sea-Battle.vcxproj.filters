@@ -38,7 +38,10 @@
     <ClInclude Include="Сonducting_a_battle_I_K.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="The_alignment_of_the_ships_I_K.h">
+    <ClInclude Include="The_alignment_of_the_ships_I.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="The_alignment_of_the_ships_K.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>

@@ -102,9 +102,10 @@ int HodKomp(char arr[SIZE][SIZE], int& x, int& y, bool Ship_DD, bool Ship_GG, bo
         }
     }
     //если булевая переменная истинная, то компьютер наносит удар по иным координатам вокруг раненого корабля
+    //удар по двухпалубным кораблям
     else if (Ship_DD) {
-        //Repeated_strike(arr[x][y], x, y, 'D');
-        bool Cycle = false; //переменная для повтора цикла
+        //Repeated_strike(arr, x, y, 'D');-не работает
+      bool Cycle = false; //переменная для повтора цикла
         do {
             int Сoordinate = rand() % 4; //переменная для выбора дальнейшей координаты (компьютер пытается найти вторую палубы двухпалубного корабля RR)
             switch (Сoordinate) {
@@ -365,7 +366,7 @@ int HodKomp(char arr[SIZE][SIZE], int& x, int& y, bool Ship_DD, bool Ship_GG, bo
                         else {
                             arr[x - 1][y] = '*';
                             Cycle = true;
-                            Сoordinate_3_TTT == 0;
+                            Сoordinate_3_TTT = 0;
                             return 0;
                         };
                     }
@@ -384,7 +385,7 @@ int HodKomp(char arr[SIZE][SIZE], int& x, int& y, bool Ship_DD, bool Ship_GG, bo
                         else {
                             arr[x][y + 1] = '*';
                             Cycle = true;
-                            Сoordinate_3_TTT == 0;
+                            Сoordinate_3_TTT = 0;
                             return 0;
                         };
                     }
@@ -403,7 +404,7 @@ int HodKomp(char arr[SIZE][SIZE], int& x, int& y, bool Ship_DD, bool Ship_GG, bo
                         else {
                             arr[x + 1][y] = '*';
                             Cycle = true;
-                            Сoordinate_3_TTT == 0;
+                            Сoordinate_3_TTT = 0;
                             return 0;
                         };
                     }
@@ -422,7 +423,7 @@ int HodKomp(char arr[SIZE][SIZE], int& x, int& y, bool Ship_DD, bool Ship_GG, bo
                         else {
                             arr[x][y - 1] = '*';
                             Cycle = true;
-                            Сoordinate_3_TTT == 0;
+                            Сoordinate_3_TTT = 0;
                             return 0;
                         };
                     }
